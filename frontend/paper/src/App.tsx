@@ -5,8 +5,8 @@ import TopNews from './pages/TopNews';
 import Sports from './pages/Sports';
 import Finance from './pages/Finance';
 import Entertainment from './pages/Entertainment';
-import Tech from './pages/Tech';
 import GitHubRedirect from './components/GitHubRedirect';
+import Technology from './pages/Technology';
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
             <Route path="/sports" element={<Sports />} />
             <Route path="/finance" element={<Finance />} />
             <Route path="/entertainment" element={<Entertainment />} />
-            <Route path="/tech" element={<Tech />} />
+            <Route path="/technology" element={<Technology />} />  {/* Changed from tech */}
             <Route path="/ajay" element={<GitHubRedirect username="hajay180505" />} />
             <Route path="/aparna" element={<GitHubRedirect username="aparna2004" />} />
           </Routes>

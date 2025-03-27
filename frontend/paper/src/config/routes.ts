@@ -3,7 +3,7 @@ export const ROUTES = {
   SPORTS: '/sports',
   FINANCE: '/finance',
   ENTERTAINMENT: '/entertainment',
-  TECH: '/tech',
+  TECHNOLOGY: '/technology',  // Changed from TECH
   AJAY: '/ajay',
   APARNA: '/aparna'
 } as const;
@@ -13,7 +13,7 @@ export const navItems = [
   { id: 'sports', label: 'Sports', path: ROUTES.SPORTS },
   { id: 'finance', label: 'Finance', path: ROUTES.FINANCE },
   { id: 'entertainment', label: 'Entertainment', path: ROUTES.ENTERTAINMENT },
-  { id: 'tech', label: 'Tech', path: ROUTES.TECH },
+  { id: 'technology', label: 'Technology', path: ROUTES.TECHNOLOGY },  // Changed from tech
   { id: 'ajay', label: 'Ajay', path: ROUTES.AJAY },
   { id: 'aparna', label: 'Aparna', path: ROUTES.APARNA }
 ] as const;
