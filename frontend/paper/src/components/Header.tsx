@@ -7,7 +7,7 @@ const Header = () => {
     <header className="flex items-center justify-between py-4 pl-4 bg-white text-black border border-gray-500 relative">
       {/* Left: Logo with Font Awesome Newspaper Icon */}
       <div className="flex items-center space-x-4">
-        <div className="m-7 w-14 h-14 border border-black rounded-full flex items-center justify-center text-xl">
+        <div className="m-5 w-14 h-14 border border-black rounded-full flex items-center justify-center text-xl">
           <FontAwesomeIcon icon={faNewspaper} />
         </div>
       </div>
@@ -15,7 +15,7 @@ const Header = () => {
       {/* Center: Title & Subtitle (Wrapper for Centering) */}
       <div className="absolute left-1/2 transform -translate-x-1/2 text-center">
         <h1 className="text-6xl font-title2">MEDIA MOSAIC</h1>
-        <p className="text-lg text-gray-600 mt-1">always the truth • forever the truth</p>
+        {/* <p className="text-lg text-gray-600 mt-1">always the truth • forever the truth</p> */}
       </div>
 
 
