@@ -28,7 +28,14 @@ const Navbar = () => {
               <TabsTrigger
                 key={item.id}
                 value={item.id}
-                className={`text-black font-semibold data-[state=active]:text-red-600 data-[state=active]:bg-transparent`}
+                className={`
+                  text-black tracking-wide text-base
+                  uppercase font-medium hover:text-gray-600
+                  transition-colors duration-200
+                  data-[state=active]:text-red-600 
+                  data-[state=active]:bg-transparent
+                  data-[state=active]:font-semibold
+                `}
               >
                 {item.label}
               </TabsTrigger>

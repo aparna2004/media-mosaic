@@ -1,35 +1,52 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { NewsItem } from "@/types/news";
+import { formatDistanceToNow } from 'date-fns';
 
 interface NewsCardProps {
-  title: string;
-  description?: string;
-  time: string;
-  category?: string;
+  news: NewsItem;
   isFeature?: boolean;
 }
 
-const NewsCard = ({ title, description, time, category, isFeature = false }: NewsCardProps) => {
+const NewsCard = ({ news, isFeature = false }: NewsCardProps) => {
+  const publishedTime = formatDistanceToNow(new Date(news.published), { addSuffix: true });
+
   return (
     <Card className="border border-gray-200 rounded-none shadow-none hover:bg-gray-50 transition-colors h-full">
       <CardContent className={`${isFeature ? 'p-6' : 'p-4'}`}>
-        <div className="space-y-4">
-          {category && (
-            <span className="inline-block px-2 py-1 bg-red-600 text-white text-xs font-semibold">
-              {category}
+        <a href={news.url} target="_blank" rel="noopener noreferrer" className="block space-y-4">
+          {news.category && news.category.length > 0 && (
+            <span className="inline-block px-2 py-1 bg-red-600 text-white text-xs font-semibold uppercase">
+              {news.category[0]}
             </span>
           )}
+          
+          {isFeature && news.image && (
+            <div className="aspect-video w-full overflow-hidden">
+              <img 
+                src={news.image} 
+                alt={news.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+
           <h2 className={`${isFeature ? 'text-3xl' : 'text-xl'} font-serif font-bold leading-tight hover:text-gray-700 line-clamp-3`}>
-            {title}
+            {news.title}
           </h2>
-          {description && (
-            <p className="text-gray-600 text-lg leading-relaxed line-clamp-3">
-              {description}
+          
+          {news.description && (
+            <p className="text-gray-600 text-lg leading-relaxed line-clamp-3 font-serif">
+              {news.description}
             </p>
           )}
-          <div className="flex items-center text-sm text-gray-500">
-            <span className="font-medium">{time}</span>
+
+          <div className="flex items-center justify-between text-sm text-gray-500">
+            <span className="font-medium">{publishedTime}</span>
+            {news.author && (
+              <span className="text-gray-400">By {news.author}</span>
+            )}
           </div>
-        </div>
+        </a>
       </CardContent>
     </Card>
   );

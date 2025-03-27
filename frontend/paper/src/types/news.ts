@@ -13,5 +13,4 @@ export interface NewsItem {
 export interface NewsResponse {
   status: string;
   news: NewsItem[];
-  page: number;
 }

@@ -1,28 +1,38 @@
+import { NewsItem } from "@/types/news";
 import NewsCard from "./NewsCard";
-import { articles } from "@/data/articles";
 
-const NewsLayout = () => {
+interface NewsLayoutProps {
+  news: NewsItem[];
+  category?: string;
+}
+
+const NewsLayout = ({ news, category }: NewsLayoutProps) => {
+  // Filter English news and by category if specified
+  const filteredNews = news.filter(item => 
+    item.language === 'en' && 
+    (!category || item.category.includes(category))
+  );
+
+  const featuredNews = filteredNews[0];
+  const sideNews = filteredNews.slice(1, 4);
+
   return (
     <div className="max-w-7xl mx-auto p-6">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         {/* Featured Article */}
         <div className="md:col-span-8">
           <NewsCard
-            title={articles[0].title}
-            description={articles[0].description}
-            time={articles[0].time}
-            category={articles[0].category}
+            news={featuredNews}
             isFeature={true}
           />
         </div>
 
         {/* Side Articles */}
         <div className="md:col-span-4 grid grid-cols-1 gap-6">
-          {articles.slice(1).map((article, index) => (
+          {sideNews.map((article) => (
             <NewsCard
-              key={index}
-              title={article.title}
-              time={article.time}
+              key={article.id}
+              news={article}
               isFeature={false}
             />
           ))}
