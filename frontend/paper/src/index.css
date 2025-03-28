@@ -1,5 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Ewert&family=Limelight&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
+
+@theme { --font-title: "Ewert", serif; 
+         --font-title2: "Limelight", sans-serif; }
 
 @custom-variant dark (&:is(.dark *));
 
