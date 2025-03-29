@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards, Request } from '@nestjs/common';
 import { AppService } from './app.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
@@ -12,7 +12,11 @@ export class AppController {
   }
   @UseGuards(JwtAuthGuard)
   @Get('protected')
-  getProtectedRoute() {
-    return 'This is a protected route:)';
+  getProtectedRoute(@Request() req :any) {
+    return {
+      message: 'This is a protected route:)',
+      userId: req.user.userId,
+      email: req.user.email,
+    };
   }
 }
