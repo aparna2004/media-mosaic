@@ -10,6 +10,15 @@
   "monorepo": true,
   "root": "apps/paper",
   "projects": {
+    "news": {
+      "type": "application",
+      "root": "apps/news",
+      "entryFile": "main",
+      "sourceRoot": "apps/news/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/news/tsconfig.app.json"
+      }
+    },
     "paper": {
       "type": "application",
       "root": "apps/paper",
@@ -17,6 +26,15 @@
       "sourceRoot": "apps/paper/src",
       "compilerOptions": {
         "tsConfigPath": "apps/paper/tsconfig.app.json"
+      }
+    },
+    "types": {
+      "type": "library",
+      "root": "libs/types",
+      "entryFile": "index",
+      "sourceRoot": "libs/types/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/types/tsconfig.lib.json"
       }
     },
     "user": {

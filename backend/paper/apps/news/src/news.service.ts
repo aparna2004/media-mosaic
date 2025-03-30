@@ -1,0 +1,43 @@
+import { Injectable } from '@nestjs/common';
+import { NewsItem, NewsCategory } from '@app/types';
+import { NewsStrategy } from './interfaces/news-strategy.interface';
+import { CurrentNewsStrategy } from './strategies/current-news.strategy';
+import { NytNewsStrategy } from './strategies/nyt-news.strategy';
+import { ToiNewsStrategy } from './strategies/toi-news.strategy';
+import { GuardianNewsStrategy } from './strategies/guardian-news.strategy';
+import { HinduNewsStrategy } from './strategies/hindu-news.strategy';
+
+@Injectable()
+export class NewsService {
+  private strategies: Map<NewsCategory, NewsStrategy>;
+
+  constructor(
+    private currentNewsStrategy: CurrentNewsStrategy,
+    private nytNewsStrategy: NytNewsStrategy,
+    private toiNewsStrategy: ToiNewsStrategy,
+    private guardianNewsStrategy: GuardianNewsStrategy,
+    private hinduNewsStrategy: HinduNewsStrategy,
+  ) {
+    this.strategies = new Map([
+      [NewsCategory.CURRENT, currentNewsStrategy],
+      [NewsCategory.NYT, nytNewsStrategy],
+      [NewsCategory.TOI, toiNewsStrategy],
+      [NewsCategory.GUARDIAN, guardianNewsStrategy],
+      [NewsCategory.HINDU, hinduNewsStrategy],
+    ]);
+  }
+
+  async getNews(preferences: string[]): Promise<NewsItem[]> {
+    const newsPromises = preferences.map(async (pref) => {
+      const strategy = this.strategies.get(pref as NewsCategory);
+      console.log('Strategy:', strategy);
+      if (!strategy) {
+        return [];
+      }
+      return strategy.getNews();
+    });
+
+    const newsArrays = await Promise.all(newsPromises);
+    return newsArrays.flat();
+  }
+}
