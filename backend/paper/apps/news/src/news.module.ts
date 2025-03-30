@@ -8,6 +8,7 @@ import { ToiNewsStrategy } from './strategies/toi-news.strategy';
 import { GuardianNewsStrategy } from './strategies/guardian-news.strategy';
 import { HinduNewsStrategy } from './strategies/hindu-news.strategy';
 import * as path from 'path';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 
 @Module({
   controllers: [NewsController],
@@ -23,6 +24,12 @@ import * as path from 'path';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: path.resolve(__dirname, '../../../.env'),
+    }),
+    PrometheusModule.register({
+      defaultMetrics: {
+        enabled: true,
+      },
+      path: '/metrics', // Prometheus metrics endpoint
     }),
   ],
 })

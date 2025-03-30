@@ -1,0 +1,37 @@
+# Request Rate by Service
+rate(news_requests_total[5m])
+
+# 95th Percentile Response Time
+histogram_quantile(0.95, rate(news_request_duration_seconds_bucket[5m]))
+
+# Service Health Status
+up{job=~"gateway|user-service|news-service"}
+
+# HTTP Request Rate by Status Code
+rate(http_requests_total{job="gateway"}[5m])
+
+# Memory Usage by Service
+process_resident_memory_bytes{job=~"gateway|user-service|news-service"}
+
+# CPU Usage by Service
+rate(process_cpu_seconds_total{job=~"gateway|user-service|news-service"}[5m])
+
+# HTTP Error Rate
+rate(http_requests_total{status=~"5.."}[5m])
+
+# Microservice Response Time Distribution
+histogram_quantile(0.5, rate(http_request_duration_seconds_bucket[5m])) # median
+histogram_quantile(0.90, rate(http_request_duration_seconds_bucket[5m])) # 90th
+histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m])) # 99th
+
+# Node.js Garbage Collection Duration
+rate(nodejs_gc_duration_seconds_sum[5m])
+
+# Active Connections by Service
+nodejs_eventloop_lag_seconds{job=~"gateway|user-service|news-service"}
+
+# Request Rate by Endpoint
+rate(http_requests_total{handler!=""}[5m])
+
+# Failed Request Rate
+sum(rate(http_requests_total{status!~"2.."}[5m])) by (service)

@@ -20,7 +20,7 @@ export class CurrentNewsStrategy implements NewsStrategy {
 
   async getNews(): Promise<NewsItem[]> {
     try {
-      const response = await axios.get(this.API_URL + 'fdsf', {
+      const response = await axios.get(this.API_URL, {
         params: {
           language: 'en',
           apiKey: this.API_KEY,

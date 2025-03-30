@@ -3,12 +3,18 @@ import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { NewsCategory, SportsCategory, NewsItem } from '@app/types';
 import { HealthCheckResponse } from '@app/types';
+import { InjectMetric } from '@willsoto/nestjs-prometheus';
+import { Counter, Histogram } from 'prom-client';
 
 @Injectable()
 export class AppService {
   constructor(
     @Inject('USER_SERVICE') private readonly userServiceClient: ClientProxy,
     @Inject('NEWS_SERVICE') private readonly newsServiceClient: ClientProxy,
+    @InjectMetric('news_requests_total')
+    private readonly newsRequestsCounter: Counter,
+    @InjectMetric('news_request_duration_seconds')
+    private readonly newsRequestDuration: Histogram,
   ) {}
 
   getHello(): string {
@@ -16,13 +22,19 @@ export class AppService {
   }
 
   async getGeneralNews(email: string): Promise<NewsItem[]> {
-    const preferences: string[] = await lastValueFrom(
-      this.userServiceClient.send('get_news_preferences', { email }),
-    );
-    const news: NewsItem[] = await lastValueFrom(
-      this.newsServiceClient.send('get_news', { preferences }),
-    );
-    return news;
+    const end = this.newsRequestDuration.startTimer();
+    try {
+      const preferences: string[] = await lastValueFrom(
+        this.userServiceClient.send('get_news_preferences', { email }),
+      );
+      const news: NewsItem[] = await lastValueFrom(
+        this.newsServiceClient.send('get_news', { preferences }),
+      );
+      this.newsRequestsCounter.inc();
+      return news;
+    } finally {
+      end();
+    }
   }
 
   // getSportsNews(email: string) {
@@ -72,7 +84,7 @@ export class AppService {
           others: 'no',
           timestamp: new Date().toISOString(),
         },
-        error: error,
+        error: error as Error,
       };
     }
   }
