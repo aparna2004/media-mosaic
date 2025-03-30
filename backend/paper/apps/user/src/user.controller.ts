@@ -1,6 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { UserService } from './user.service';
+import { HealthCheckResponse } from '@app/types';
 
 @Controller()
 export class UserController {
@@ -32,4 +33,16 @@ export class UserController {
   }): Promise<any> {
     return this.userService.setNewsPreferences(data.email, data.newsArray);
   }
+
+  @MessagePattern('health_check')
+  healthCheck(): HealthCheckResponse {
+    return {
+      service: 'user',
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      version: process.env.npm_package_version || '1.0.0',
+      uptime: process.uptime(),
+    };
+  }
+  
 }

@@ -7,7 +7,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Media Mosaic API')
-    .setDescription('The Media Mosaic API description')
+    .setDescription('Almost a newspaper')
     .setVersion('1.0')
     .addTag('news')
     .addBearerAuth()

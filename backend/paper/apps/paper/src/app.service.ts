@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { NewsCategory, SportsCategory, NewsItem } from '@app/types';
+import { HealthCheckResponse } from '@app/types';
 
 @Injectable()
 export class AppService {
@@ -37,15 +38,42 @@ export class AppService {
     };
   }
 
-  async setNewsPreferences(
-    email: string,
-    newsArray: string[],
-  ): Promise<any> {
+  async setNewsPreferences(email: string, newsArray: string[]): Promise<any> {
     return await lastValueFrom(
       this.userServiceClient.send('set_news_preferences', {
         email,
         newsArray,
       }),
     );
+  }
+
+  async checkServicesHealth() {
+    try {
+      const [userHealth, newsHealth] = await Promise.all([
+        lastValueFrom(
+          this.userServiceClient.send<HealthCheckResponse>('health_check', {}),
+        ),
+        lastValueFrom(
+          this.newsServiceClient.send<HealthCheckResponse>('health_check', {}),
+        ),
+      ]);
+      return {
+        gateway: {
+          status: 'ok',
+          timestamp: new Date().toISOString(),
+        },
+        user: userHealth,
+        news: newsHealth,
+      };
+    } catch (error: any) {
+      return {
+        gateway: {
+          status: 'ok',
+          others: 'no',
+          timestamp: new Date().toISOString(),
+        },
+        error: error,
+      };
+    }
   }
 }
