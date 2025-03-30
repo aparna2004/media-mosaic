@@ -3,13 +3,19 @@ import { NewsModule } from './news.module';
 import { Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice(NewsModule, {
+  const app = await NestFactory.create(NewsModule);
+
+  // TCP Microservice
+  app.connectMicroservice({
     transport: Transport.TCP,
     options: {
       host: 'localhost',
       port: 3002,
     },
   });
-  await app.listen();
+
+  // HTTP for Prometheus metrics
+  await app.listen(4002);
+  await app.startAllMicroservices();
 }
 bootstrap();

@@ -3,6 +3,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AuthModule } from './auth/auth.module';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
+import { metricsProviders } from './metrics/metrics.providers';
+
 @Module({
   imports: [
     AuthModule,
@@ -24,8 +27,13 @@ import { AuthModule } from './auth/auth.module';
         },
       },
     ]),
+    PrometheusModule.register({
+      defaultMetrics: {
+        enabled: true,
+      },
+    }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ...metricsProviders],
 })
 export class AppModule {}
