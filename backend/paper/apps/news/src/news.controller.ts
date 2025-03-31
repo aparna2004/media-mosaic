@@ -7,9 +7,14 @@ import { HealthCheckResponse } from '@app/types';
 export class NewsController {
   constructor(private readonly newsService: NewsService) {}
 
+  @MessagePattern('get_general_news')
+  async getGeneralNews(data: { preferences: string[] }): Promise<any> {
+    return this.newsService.getGeneralNews(data.preferences);
+  }
+
   @MessagePattern('get_news')
-  async getNews(data: { preferences: string[] }): Promise<any> {
-    return this.newsService.getNews(data.preferences);
+  async getNews(): Promise<any> {
+    return this.newsService.getNews();
   }
 
   @MessagePattern('health_check')

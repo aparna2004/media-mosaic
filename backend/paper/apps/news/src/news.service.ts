@@ -27,7 +27,7 @@ export class NewsService {
     ]);
   }
 
-  async getNews(preferences: string[]): Promise<NewsItem[]> {
+  async getGeneralNews(preferences: string[]): Promise<NewsItem[]> {
     const newsPromises = preferences.map(async (pref) => {
       const strategy = this.strategies.get(pref as NewsCategory);
       console.log('Strategy:', strategy);
@@ -39,5 +39,9 @@ export class NewsService {
 
     const newsArrays = await Promise.all(newsPromises);
     return newsArrays.flat();
+  }
+
+  async getNews() {
+    return this.currentNewsStrategy.getNews();
   }
 }

@@ -96,6 +96,14 @@ export class AppController {
   }
 
   @ApiTags('news')
+  @Get('news')
+  @ApiOperation({ summary: 'Get news for unauthorized user' })
+  @ApiResponse({ status: 200, description: 'Returns news articles' })
+  getNews() {
+    return this.appService.getNews();
+  }
+
+  @ApiTags('news')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post('set-news-preferences')

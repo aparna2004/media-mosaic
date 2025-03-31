@@ -28,7 +28,20 @@ export class AppService {
         this.userServiceClient.send('get_news_preferences', { email }),
       );
       const news: NewsItem[] = await lastValueFrom(
-        this.newsServiceClient.send('get_news', { preferences }),
+        this.newsServiceClient.send('get_general_news', { preferences }),
+      );
+      this.newsRequestsCounter.inc();
+      return news;
+    } finally {
+      end();
+    }
+  }
+
+  async getNews(): Promise<NewsItem[]> {
+    const end = this.newsRequestDuration.startTimer();
+    try {
+      const news: NewsItem[] = await lastValueFrom(
+        this.newsServiceClient.send('get_news', {}),
       );
       this.newsRequestsCounter.inc();
       return news;
