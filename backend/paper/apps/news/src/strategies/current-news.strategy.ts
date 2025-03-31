@@ -14,7 +14,10 @@ export class CurrentNewsStrategy implements NewsStrategy {
   private readonly FALLBACK_DATA = currentNewsFallback;
 
   constructor(private configService: ConfigService) {
-    this.API_URL = this.configService.get<string>('CURRENT_NEWS_API_URL') || '';
+    const debug = this.configService.get<boolean>('DEBUG') || true;
+    this.API_URL = debug
+      ? ''
+      : this.configService.get<string>('CURRENT_NEWS_API_URL') || '';
     this.API_KEY = this.configService.get<string>('CURRENT_NEWS_API_KEY') || '';
   }
 
