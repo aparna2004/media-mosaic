@@ -13,7 +13,7 @@ export class ToiNewsStrategy implements NewsStrategy {
   private readonly FALLBACK_DATA: string;
 
   constructor(private configService: ConfigService) {
-    this.API_URL = 'https://timesofindia.indiatimes.com/rssfeedstopstories.cms';
+    this.API_URL = this.configService.get<string>('TOI_URL') || '';
     this.FALLBACK_DATA = toiNewsFallback;
   }
 
