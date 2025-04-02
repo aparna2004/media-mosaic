@@ -14,13 +14,12 @@ const Header = () => {
 
       {/* Center: Title & Subtitle (Wrapper for Centering) */}
       <div className="absolute left-1/2 transform -translate-x-1/2 text-center">
-        <h1 className="text-6xl font-title2">MEDIA MOSAIC</h1>
+        <h1 className="text-7xl font-title ">Media Mosaic</h1>
         {/* <p className="text-lg text-gray-600 mt-1">always the truth • forever the truth</p> */}
       </div>
 
-
       {/* Right: Login/Signup */}
-      <div className="flex flex-col px-4 py-2 space-y-2 border-l-2 border-gray-500/80">
+      <div className="flex flex-row px-4 py-2 space-x-4 border-l-2 border-gray-500/80">
         <Button variant="outline" className="border-black text-black">LOGIN</Button>
         <Button variant="outline" className="border-black text-black">SIGNUP</Button>
       </div>
