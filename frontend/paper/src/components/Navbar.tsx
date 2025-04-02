@@ -14,9 +14,17 @@ const Navbar = () => {
 
   const handleNavigation = (value: string) => {
     const navItem = navItems.find(item => item.id === value);
-    if (navItem) {
-      navigate(navItem.path);
+    if (!navItem) return;
+
+    // Handle GitHub redirects
+    if (navItem.id === 'ajay' || navItem.id === 'aparna') {
+      const username = navItem.id === 'ajay' ? 'hajay180505' : 'aparna2004';
+      window.open(`https://github.com/${username}`, '_blank', 'noopener,noreferrer');
+      return;
     }
+
+    // Regular navigation
+    navigate(navItem.path);
   };
 
   return (

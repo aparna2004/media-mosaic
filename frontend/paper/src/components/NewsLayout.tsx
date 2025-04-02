@@ -17,7 +17,7 @@ const NewsLayout = ({ news, category }: NewsLayoutProps) => {
   const sideNews = filteredNews.slice(1, 4);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 min-h-screen">
+    <div className="max-w-9xl mx-auto px-4 min-h-screen">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         {/* Featured Article */}
         <div className="md:col-span-8">
