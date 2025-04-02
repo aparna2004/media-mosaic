@@ -41,6 +41,6 @@ export class NewsService {
   }
 
   async getNews() {
-    return this.guardianNewsStrategy.getNews();
+    return this.nytNewsStrategy.getNews();
   }
 }
