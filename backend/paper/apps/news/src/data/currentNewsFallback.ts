@@ -2,19 +2,6 @@ export const currentNewsFallback = {
   status: 'ok',
   news: [
     {
-      id: 'de89974e-c13d-45c1-a3b1-75de2afa5645',
-      title:
-        "'We don't want to die': Gazans protest Hamas rule, war with Israel in rare show of dissent",
-      description: '',
-      url: 'https://www.haaretz.com/middle-east-news/2025-03-26/ty-article/we-dont-want-to-die-gazans-protest-hamas-rule-war-with-israel-in-rare-show-of-dissent/00000195-d11c-db0b-a5f5-ddfcd5f30000',
-      author: '0000017f-da24-d938-a17f-fe2eb16e0000',
-      image:
-        'https://img.haarets.co.il/bs/00000195-d145-da24-affd-fbe5c5060007/04/fc/cfed90de4c8aa34ff465f3d0e31a/049670-2.jpg?precrop=2139,1244,x24,y357&height=630&width=1200',
-      language: 'en',
-      category: ['regional', 'middle-east'],
-      published: '2025-03-26 09:23:10 +0000',
-    },
-    {
       id: '133d1b47-9407-4224-8d93-1bd057e609d2',
       title:
         'DC Handal deploys 120kW DC Charger at MH Hotel Ipoh, priced at RM1.30 per kWh - SoyaCincau',
