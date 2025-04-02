@@ -19,7 +19,7 @@ export class ToiNewsStrategy implements NewsStrategy {
 
   async getNews(): Promise<NewsItem[]> {
     try {
-      const response = await axios.get(this.API_URL);
+      const response = await axios.get<string>(this.API_URL);
       return this.parseXmlToNewsItems(response.data);
     } catch (error) {
       this.logger.warn(`Failed to fetch TOI news: ${error.message}`);

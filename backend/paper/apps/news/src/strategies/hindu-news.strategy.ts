@@ -16,7 +16,7 @@ export class HinduNewsStrategy implements NewsStrategy {
 
   async getNews(): Promise<NewsItem[]> {
     try {
-      const response = await axios.get(this.API_URL);
+      const response = await axios.get<string>(this.API_URL);
       return this.parseRssToNewsItems(response.data);
     } catch (error) {
       this.logger.warn(`Failed to fetch Hindu news: ${error.message}`);

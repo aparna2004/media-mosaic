@@ -22,7 +22,7 @@ export class CurrentNewsStrategy implements NewsStrategy {
 
   async getNews(): Promise<NewsItem[]> {
     try {
-      const response = await axios.get(this.API_URL, {
+      const response = await axios.get<{ status: string; news: any[] }>(this.API_URL, {
         params: {
           language: 'en',
           apiKey: this.API_KEY,
@@ -42,8 +42,8 @@ export class CurrentNewsStrategy implements NewsStrategy {
       );
       return this.getFallbackNews();
     }
-  }
 
+  }
   private getFallbackNews(): NewsItem[] {
     try {
       const data = this.FALLBACK_DATA;

@@ -18,14 +18,13 @@ export class GuardianNewsStrategy implements NewsStrategy {
 
   async getNews(): Promise<NewsItem[]> {
     try {
-      const response = await axios.get(this.API_URL);
+      const response = await axios.get<string>(this.API_URL);
       return this.parseRssToNewsItems(response.data);
     } catch (error) {
       this.logger.warn(`Failed to fetch Guardian news: ${error.message}`);
       return this.parseRssToNewsItems(gurardianNewsFallback);
     }
   }
-
   private async parseRssToNewsItems(xmlData: string): Promise<NewsItem[]> {
     try {
       const parser = new xml2js.Parser({ explicitArray: false });
