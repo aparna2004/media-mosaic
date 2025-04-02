@@ -18,7 +18,7 @@ export class NewsService {
     private guardianNewsStrategy: GuardianNewsStrategy,
     private hinduNewsStrategy: HinduNewsStrategy,
   ) {
-    this.strategies = new Map([
+    this.strategies = new Map<NewsCategory, NewsStrategy>([
       [NewsCategory.CURRENT, currentNewsStrategy],
       [NewsCategory.NYT, nytNewsStrategy],
       [NewsCategory.TOI, toiNewsStrategy],
@@ -26,7 +26,6 @@ export class NewsService {
       [NewsCategory.HINDU, hinduNewsStrategy],
     ]);
   }
-
   async getGeneralNews(preferences: string[]): Promise<NewsItem[]> {
     const newsPromises = preferences.map(async (pref) => {
       const strategy = this.strategies.get(pref as NewsCategory);
@@ -42,6 +41,6 @@ export class NewsService {
   }
 
   async getNews() {
-    return this.nytNewsStrategy.getNews();
+    return this.guardianNewsStrategy.getNews();
   }
 }
