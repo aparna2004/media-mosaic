@@ -41,7 +41,7 @@ export class GuardianNewsStrategy implements NewsStrategy {
         description: this.stripHtml(item.description),
         url: item.guid,
         author: item['dc:creator'] || 'The Guardian',
-        image: item['media:content']?.url || '',
+        image: item['media:content'][0]?.$.url || '',
         language: 'en',
         published: item.pubDate,
         category: Array.isArray(item.category)
