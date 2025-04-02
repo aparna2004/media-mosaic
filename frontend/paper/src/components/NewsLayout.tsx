@@ -1,5 +1,6 @@
 import { NewsItem } from "@/types/news";
 import NewsCard from "./NewsCard";
+import { CategorySelector } from './CategorySelector';
 
 interface NewsLayoutProps {
   news: NewsItem[];
@@ -13,34 +14,51 @@ const NewsLayout = ({ news, category }: NewsLayoutProps) => {
     (!category || item.category.includes(category))
   );
 
-  const featuredNews = filteredNews[0];
-  const sideNews = filteredNews.slice(1, 4);
-  console.log("f", filteredNews);
-  console.log("s", sideNews);
+  // Create chunks of 4 articles (1 main + 3 side)
+  const newsChunks = filteredNews.reduce((chunks, item, index) => {
+    const chunkIndex = Math.floor(index / 4);
+    if (!chunks[chunkIndex]) {
+      chunks[chunkIndex] = [];
+    }
+    chunks[chunkIndex].push(item);
+    return chunks;
+  }, [] as NewsItem[][]);
 
+  const handleCategoryChange = (newCategory: string) => {
+    // Handle category change
+    console.log('Selected category:', newCategory);
+  };
 
   return (
-    <div className="max-w-9xl mx-auto px-4 min-h-screen">
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-        {/* Featured Article */}
-        <div className="md:col-span-8">
-          <NewsCard
-            news={featuredNews}
-            isFeature={true}
-          />
-        </div>
+    <div className="max-w-7xl mx-auto px-4 min-h-screen space-y-8">
+      <CategorySelector onCategoryChange={handleCategoryChange} />
+      {newsChunks.map((chunk, index) => {
+        const mainArticle = chunk[0];
+        const sideArticles = chunk.slice(1);
 
-        {/* Side Articles */}
-        <div className="md:col-span-4 grid grid-cols-1 gap-6">
-          {sideNews.map((article) => (
-            <NewsCard
-              key={article.id}
-              news={article}
-              isFeature={false}
-            />
-          ))}
-        </div>
-      </div>
+        return (
+          <div key={index} className="grid grid-cols-1 md:grid-cols-12 gap-6">
+            {/* Main Article */}
+            <div className="md:col-span-8">
+              <NewsCard
+                news={mainArticle}
+                isFeature={true}
+              />
+            </div>
+
+            {/* Side Articles */}
+            <div className="md:col-span-4 grid grid-cols-1 gap-6">
+              {sideArticles.map((article) => (
+                <NewsCard
+                  key={article.id}
+                  news={article}
+                  isFeature={false}
+                />
+              ))}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };

@@ -21,7 +21,7 @@ const NewsCard = ({ news, isFeature = false }: NewsCardProps) => {
       <CardContent className={`${isFeature ? 'p-6' : 'p-4'}`}>
         <a href={news.url} target="_blank" rel="noopener noreferrer" className="block space-y-4">
           {news.category && news.category.length > 0 && (
-            <span className="inline-block px-2 py-1 bg-red-600 text-white text-xs font-semibold uppercase">
+            <span className="inline-block px-2 py-1 bg-black text-white text-xs font-semibold uppercase">
               {news.category[0]}
             </span>
           )}
