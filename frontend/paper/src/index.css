@@ -2,8 +2,21 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@theme { --font-title: "Ewert", serif; 
-         --font-title2: "Limelight", sans-serif; }
+@theme { 
+  --font-title: "Ewert", serif; 
+  --font-title2: "Limelight", sans-serif; 
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+* {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
 
 @custom-variant dark (&:is(.dark *));
 

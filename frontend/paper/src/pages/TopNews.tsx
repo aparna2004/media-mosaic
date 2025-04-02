@@ -3,22 +3,13 @@ import axios from 'axios';
 import NewsLayout from "@/components/NewsLayout";
 import { NewsItem } from "@/types/news";
 
-const API_KEY = 'rGagiwIiYf5jPiTQxYV9zjmcIM3tFRr3Rag5SlSkgi9odQpT'; // Move this to .env file
-const API_URL = 'https://api.currentsapi.services/v1/latest-news';
+const API_URL = 'http://localhost:3000/news';
 
 const fetchNews = async () => {
-  const { data } = await axios.get(API_URL, {
-    params: {
-      language: 'en',
-      apiKey: API_KEY
-    }
-  });
-  
-  if (data.status !== 'ok') {
-    throw new Error('Failed to fetch news');
-  }
-  
-  return data.news as NewsItem[];
+  const { data } = await axios.get(API_URL);
+  console.log('Fetched news:', data);
+ 
+  return data as NewsItem[];
 };
 
 const TopNews = () => {
@@ -29,7 +20,7 @@ const TopNews = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen overflow-auto">
         <div className="text-xl font-semibold">Loading news...</div>
       </div>
     );
@@ -37,7 +28,7 @@ const TopNews = () => {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen overflow-auto">
         <div className="text-xl font-semibold text-red-600">
           {error instanceof Error ? error.message : 'Failed to load news'}
         </div>
@@ -46,7 +37,7 @@ const TopNews = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto overflow-auto">
       <NewsLayout news={news || []} />
     </div>
   );

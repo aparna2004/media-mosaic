@@ -9,7 +9,7 @@ interface NewsCardProps {
 
 const NewsCard = ({ news, isFeature = false }: NewsCardProps) => {
   const publishedTime = formatDistanceToNow(new Date(news.published), { addSuffix: true });
-
+  console.log('News:', news.image);
   return (
     <Card className="border border-gray-200 rounded-none shadow-none hover:bg-gray-50 transition-colors h-full">
       <CardContent className={`${isFeature ? 'p-6' : 'p-4'}`}>
@@ -27,6 +27,7 @@ const NewsCard = ({ news, isFeature = false }: NewsCardProps) => {
                 alt={news.title}
                 className="w-full h-full object-cover"
               />
+              
             </div>
           )}
 
