@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import NewsLayout from "@/components/NewsLayout";
 import { NewsItem } from "@/types/news";
@@ -7,7 +7,6 @@ const API_URL = 'http://localhost:3000/news';
 
 const fetchNews = async () => {
   const { data } = await axios.get(API_URL);
-  console.log('Fetched news:', data);
  
   return data as NewsItem[];
 };
@@ -16,7 +15,8 @@ const TopNews = () => {
   const { data: news, isLoading, error } = useQuery({
     queryKey: ['news'],
     queryFn: fetchNews,
-  });
+  }); 
+  console.log(news)
 
   if (isLoading) {
     return (

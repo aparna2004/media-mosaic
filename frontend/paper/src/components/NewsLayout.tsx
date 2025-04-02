@@ -15,6 +15,9 @@ const NewsLayout = ({ news, category }: NewsLayoutProps) => {
 
   const featuredNews = filteredNews[0];
   const sideNews = filteredNews.slice(1, 4);
+  console.log("f", filteredNews);
+  console.log("s", sideNews);
+
 
   return (
     <div className="max-w-9xl mx-auto px-4 min-h-screen">

@@ -42,6 +42,6 @@ export class NewsService {
   }
 
   async getNews() {
-    return this.currentNewsStrategy.getNews();
+    return this.nytNewsStrategy.getNews();
   }
 }

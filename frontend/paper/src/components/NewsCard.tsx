@@ -8,8 +8,14 @@ interface NewsCardProps {
 }
 
 const NewsCard = ({ news, isFeature = false }: NewsCardProps) => {
-  const publishedTime = formatDistanceToNow(new Date(news.published), { addSuffix: true });
-  console.log('News:', news.image);
+  if (!news) {
+    return null;
+  }
+
+  const publishedTime = news.published 
+    ? formatDistanceToNow(new Date(news.published), { addSuffix: true })
+    : '';
+
   return (
     <Card className="border border-gray-200 rounded-none shadow-none hover:bg-gray-50 transition-colors h-full">
       <CardContent className={`${isFeature ? 'p-6' : 'p-4'}`}>
@@ -24,10 +30,9 @@ const NewsCard = ({ news, isFeature = false }: NewsCardProps) => {
             <div className="aspect-video w-full overflow-hidden">
               <img 
                 src={news.image} 
-                alt={news.title}
+                alt={news.title || 'News image'}
                 className="w-full h-full object-cover"
               />
-              
             </div>
           )}
 
