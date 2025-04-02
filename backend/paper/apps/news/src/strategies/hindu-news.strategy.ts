@@ -5,7 +5,6 @@ import { NewsItem } from '@app/types';
 import axios from 'axios';
 import * as xml2js from 'xml2js';
 import { hinduNewsFallback } from '../data/hinduNewsFallback';
-
 @Injectable()
 export class HinduNewsStrategy implements NewsStrategy {
   private readonly logger = new Logger(HinduNewsStrategy.name);
