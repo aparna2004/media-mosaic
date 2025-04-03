@@ -1,40 +1,33 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { LoginCredentials, RegisterCredentials, AuthResponse } from '@/types/auth';
+import { API_BASE_URL } from '@/config/api';
 
-const API_URL = 'http://localhost:8001/auth';
+const AUTH_URL = `${API_BASE_URL}/auth`;
 
 export const authService = {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
-      const { data } = await axios.post(`${API_URL}/login`, credentials);
-      console.log("data", data);  
-      if (data.access_token) {
-        localStorage.setItem('token', data.access_token);
+      const { data } = await axios.post(`${AUTH_URL}/login`, credentials);
+      if (data.token) {
+        localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        const result = localStorage.getItem('token');
-        console.log(result);
       }
       return data;
     } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        throw new Error(error.response.data.message || 'Login failed');
-      }
-      throw new Error('Network error occurred');
+      throw error;
     }
   },
 
   async register(credentials: RegisterCredentials): Promise<AuthResponse> {
     try {
-      const { data } = await axios.post(`${API_URL}/signup`, credentials);
+      const { data } = await axios.post(`${AUTH_URL}/register`, credentials);
       if (data.token) {
+        localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
       }
       return data;
     } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        throw new Error(error.response.data.message || 'Registration failed');
-      }
-      throw new Error('Network error occurred');
+      throw error;
     }
   },
 

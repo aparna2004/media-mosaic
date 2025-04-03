@@ -2,12 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import NewsLayout from "@/components/NewsLayout";
 import { NewsItem } from "@/types/news";
-
-const API_URL = 'http://localhost:8001/news';
+import { API_BASE_URL } from '@/config/api';
 
 const fetchNews = async () => {
-  const { data } = await axios.get(API_URL);
- 
+  const { data } = await axios.get(`${API_BASE_URL}/news`);
   return data as NewsItem[];
 };
 

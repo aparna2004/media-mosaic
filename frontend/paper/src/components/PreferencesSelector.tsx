@@ -6,6 +6,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { API_BASE_URL } from '@/config/api';
+import { useMutation } from '@tanstack/react-query';
 
 export function PreferencesSelector() {
   const [categories, setCategories] = useState<Categories | null>(null);
@@ -38,31 +40,17 @@ export function PreferencesSelector() {
     loadCategories();
   }, [navigate, user]);
 
-  const handlePreferenceChange = (category: string, checked: boolean) => {
-    setSelectedPreferences(prev => {
-      if (checked) {
-        return [...prev, category];
-      }
-      return prev.filter(p => p !== category);
-    });
-  };
-
-  const handleSavePreferences = async () => {
-    try {
+  const mutation = useMutation({
+    mutationFn: async (preferences: string[]) => {
       const token = localStorage.getItem('token');
       if (!token) {
         console.log('Token not found, redirecting to login...');
         navigate('/login');
         return;
       }
+      const requestBody = { newsArray: preferences };
 
-      // Format the request body according to the specified structure
-      const requestBody = {
-        newsArray: selectedPreferences
-      };
-
-      console.log('Saving preferences with token:', token);
-      const response = await fetch('http://localhost:8001/set-news-preferences', {
+      const response = await fetch(`${API_BASE_URL}/set-news-preferences`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -70,17 +58,27 @@ export function PreferencesSelector() {
         },
         body: JSON.stringify(requestBody),
       });
-
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
-      const data = await response.json();
+      return response.json();
+    },
+    onSuccess: (data) => {
       console.log('Preferences saved successfully:', data);
       navigate('/');
-    } catch (error) {
+    },
+    onError: (error) => {
       console.error('Failed to save preferences:', error);
     }
+  });
+
+  const handlePreferenceChange = (category: string, checked: boolean) => {
+    setSelectedPreferences(prev => {
+      if (checked) {
+        return [...prev, category];
+      }
+      return prev.filter(p => p !== category);
+    });
   };
 
   if (!categories) return null;
@@ -110,9 +108,10 @@ export function PreferencesSelector() {
         </div>
         <Button 
           className="w-full mt-6" 
-          onClick={handleSavePreferences}
+          onClick={() => mutation.mutate(selectedPreferences)}
+          disabled={mutation.isPending}
         >
-          Save Preferences
+          {mutation.isPending ? 'Saving...' : 'Save Preferences'}
         </Button>
       </CardContent>
     </Card>

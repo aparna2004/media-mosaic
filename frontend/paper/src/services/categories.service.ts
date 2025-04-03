@@ -1,11 +1,10 @@
 import axios from 'axios';
 import { Categories } from '@/types/categories';
-
-const API_URL = 'http://localhost:8001/categories';
+import { API_BASE_URL } from '@/config/api';
 
 export const categoriesService = {
   async getCategories(): Promise<Categories> {
-    const { data } = await axios.get(API_URL);
+    const { data } = await axios.get(`${API_BASE_URL}/categories`);
     return data;
   }
 };
