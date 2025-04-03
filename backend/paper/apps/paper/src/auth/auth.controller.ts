@@ -4,13 +4,10 @@ import {
   Body,
   HttpException,
   HttpStatus,
-  UseGuards,
-  Req,
   Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto, SignupDto } from './dto/auth.dto';
-import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { Response } from 'express';
 
 @Controller('auth')
@@ -53,12 +50,5 @@ export class AuthController {
       message: 'User created successfully',
       user: { email: user.email, id: user.id },
     };
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Post('logout')
-  async logout(@Res({ passthrough: true }) response: Response) {
-    response.clearCookie('jwt');
-    return { message: 'Logout successful' };
   }
 }
