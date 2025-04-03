@@ -1,9 +1,6 @@
 export enum SportsCategory {
-  CRICKET = 'cricket',
+  INDIAN = 'indian',
   FOOTBALL = 'football',
-  NFL = 'nfl',
-  MLB = 'mlb',
-  NHL = 'nhl',
   NBA = 'nba',
 }
 

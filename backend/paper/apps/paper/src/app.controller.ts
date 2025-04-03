@@ -22,13 +22,6 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @ApiTags('health')
-  @Get()
-  @ApiOperation({ summary: 'Get hello message' })
-  getHello(): string {
-    return this.appService.getHello();
-  }
-
-  @ApiTags('health')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get('protected')
@@ -109,11 +102,21 @@ export class AppController {
   @Post('set-preferences')
   @ApiOperation({ summary: 'Set user news preferences' })
   @ApiResponse({ status: 200, description: 'Preferences updated successfully' })
-  setNewsPreferences(
+  setPreferences(
     @Request() req: any,
     @Body() setPreferencesDto: PreferencesDto,
   ) {
     return this.appService.setPreferences(req.user.email, setPreferencesDto);
+  }
+
+  @ApiTags('news')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('get-preferences')
+  @ApiOperation({ summary: 'Get user news preferences' })
+  @ApiResponse({ status: 200, description: 'Successfully got preferences' })
+  getPreferences(@Request() req: any) {
+    return this.appService.getPreferences(req.user.email);
   }
 
   @ApiTags('news')
@@ -139,15 +142,6 @@ export class AppController {
   @Get('news/sports')
   @ApiOperation({ summary: 'Get sports news' })
   async getSportsNews(@Request() req: any) {
-    await this.appService.getSportsNews(req.user.email);
-  }
-
-  @ApiTags('news')
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @Get('news/sports')
-  @ApiOperation({ summary: 'Get sports news' })
-  async getPreferences(@Request() req: any) {
-    await this.appService.getSportsNews(req.user.email);
+    return await this.appService.getSportsNews(req.user.email);
   }
 }

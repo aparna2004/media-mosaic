@@ -40,13 +40,13 @@ export class UserService {
     return null;
   }
 
-  async getPreferences(email: string): Promise<JsonObject> {
+  async getPreferences(email: string): Promise<PreferencesDto> {
     const user = await this.prisma.user.findUnique({
       where: { email },
       select: { preferences: true },
     });
 
-    return (user?.preferences as JsonObject) || {};
+    return (user?.preferences as unknown as PreferencesDto) || {};
   }
 
   async setPreferences(email: string, preferences: PreferencesDto) {

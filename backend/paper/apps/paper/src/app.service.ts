@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
-import { NewsCategory, SportsCategory, NewsItem, Message } from '@app/types';
+import { NewsCategory, SportsCategory, NewsItem, Message, SportsItem } from '@app/types';
 import { HealthCheckResponse } from '@app/types';
 import { InjectMetric } from '@willsoto/nestjs-prometheus';
 import { Counter, Histogram } from 'prom-client';
@@ -64,9 +64,9 @@ export class AppService {
       const preferences: PreferencesDto = await lastValueFrom(
         this.userServiceClient.send(Message.GET_PREFERENCES, { email }),
       );
-      const news: NewsItem[] = await lastValueFrom(
+      const news: SportsItem[] = await lastValueFrom(
         this.sportsServiceClient.send(Message.GET_SPORTS_NEWS, {
-          preferences: preferences.news,
+          preferences: preferences.sports,
         }),
       );
       this.sportsRequestCounter.inc();
@@ -129,5 +129,13 @@ export class AppService {
         error: error as Error,
       };
     }
+  }
+
+  async getPreferences(email: string): Promise<PreferencesDto> {
+    return await lastValueFrom(
+      this.userServiceClient.send<PreferencesDto>(Message.GET_PREFERENCES, {
+        email,
+      }),
+    );
   }
 }

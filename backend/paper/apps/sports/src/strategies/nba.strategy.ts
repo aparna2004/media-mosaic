@@ -2,16 +2,16 @@ import { SportsItem } from '@app/types';
 import { SportsStrategy } from '../interfaces/sports-strategy.interface';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { footballFallback } from '../data/footballFallback';
+import { nbaFallback } from '../data/nbaFallback';
 import axios from 'axios';
 
 @Injectable()
-export class FootballStrategy implements SportsStrategy {
-  private readonly logger = new Logger(FootballStrategy.name);
+export class NBAStrategy implements SportsStrategy {
+  private readonly logger = new Logger(NBAStrategy.name);
   private readonly API_URL: string;
 
   constructor(private configService: ConfigService) {
-    this.API_URL = this.configService.get<string>('NFL_URL') || '';
+    this.API_URL = this.configService.get<string>('NBA_URL') || '';
   }
 
   async getSportNews(): Promise<SportsItem[]> {
@@ -20,11 +20,10 @@ export class FootballStrategy implements SportsStrategy {
       return this.parseToSportsItems(response.data);
     } catch (error: unknown) {
       this.logger.warn(`Failed to fetch NFL news: ${error.message}`);
-      return this.parseToSportsItems(footballFallback);
+      return this.parseToSportsItems(nbaFallback);
     }
   }
   private parseToSportsItems(apiData: any): SportsItem[] {
-    // console.log(apiData.articles);
     return apiData.articles.reduce((acc: SportsItem[], curr) => {
       if (curr.type == 'HeadlineNews' || curr.type == 'Story') {
         return [
@@ -36,9 +35,9 @@ export class FootballStrategy implements SportsStrategy {
             published: curr.published,
             url: curr.links.web.href,
             image: curr.images[0].url,
-            category: curr.categories.map(
-              (category) => category.description ?? '',
-            ).filter(x => x!== ''),
+            category: curr.categories
+              .map((category) => category.description ?? '')
+              .filter((x) => x !== ''),
           },
         ];
       } else {

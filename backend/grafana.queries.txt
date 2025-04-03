@@ -5,16 +5,16 @@ rate(news_requests_total[5m])
 histogram_quantile(0.95, rate(news_request_duration_seconds_bucket[5m]))
 
 # Service Health Status
-up{job=~"gateway|user-service|news-service"}
+up{job=~"gateway|user-service|news-service|sports-service"}
 
 # HTTP Request Rate by Status Code
 rate(http_requests_total{job="gateway"}[5m])
 
 # Memory Usage by Service
-process_resident_memory_bytes{job=~"gateway|user-service|news-service"}
+process_resident_memory_bytes{job=~"gateway|user-service|news-service|sports-service"}
 
 # CPU Usage by Service
-rate(process_cpu_seconds_total{job=~"gateway|user-service|news-service"}[5m])
+rate(process_cpu_seconds_total{job=~"gateway|user-service|news-service|sports-service"}[5m])
 
 # HTTP Error Rate
 rate(http_requests_total{status=~"5.."}[5m])
@@ -28,7 +28,7 @@ histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m])) # 99th
 rate(nodejs_gc_duration_seconds_sum[5m])
 
 # Active Connections by Service
-nodejs_eventloop_lag_seconds{job=~"gateway|user-service|news-service"}
+nodejs_eventloop_lag_seconds{job=~"gateway|user-service|news-service|sports-service"}
 
 # Request Rate by Endpoint
 rate(http_requests_total{handler!=""}[5m])

@@ -6,7 +6,7 @@ export class PreferencesDto {
   @ApiProperty({
     enum: NewsCategory,
     isArray: true,
-    example: ['current', 'nyt', 'guardian'],
+    example: Object.values(NewsCategory),
     description: 'Array of news categories to subscribe to',
   })
   @IsArray()
@@ -16,7 +16,7 @@ export class PreferencesDto {
   @ApiProperty({
     enum: SportsCategory,
     isArray: true,
-    example: ['nfl', 'cricket', 'nba'],
+    example: Object.values(SportsCategory),
     description: 'Array of sports categories to subscribe to',
   })
   @IsArray()

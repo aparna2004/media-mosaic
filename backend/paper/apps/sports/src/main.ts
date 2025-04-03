@@ -14,7 +14,7 @@ async function bootstrap() {
   });
 
   // HTTP for Prometheus metrics
-  await app.listen(4004);
+  await app.listen(4003);
   await app.startAllMicroservices();
 }
 bootstrap();

@@ -4,6 +4,9 @@ import { SportsService } from './sports.service';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import * as path from 'path';
 import { ConfigModule } from '@nestjs/config';
+import { FootballStrategy } from './strategies/football.strategy';
+import { HinduStrategy } from './strategies/hindu.strategy';
+import { NBAStrategy } from './strategies/nba.strategy';
 
 @Module({
   imports: [
@@ -19,6 +22,6 @@ import { ConfigModule } from '@nestjs/config';
     }),
   ],
   controllers: [SportsController],
-  providers: [SportsService],
+  providers: [SportsService, FootballStrategy, HinduStrategy, NBAStrategy],
 })
 export class SportsModule {}

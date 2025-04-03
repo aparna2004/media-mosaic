@@ -6,8 +6,8 @@ import axios from 'axios';
 import * as xml2js from 'xml2js';
 import { hinduFallback } from '../data/hinduFallback';
 @Injectable()
-export class HinduNewsStrategy implements SportsStrategy {
-  private readonly logger = new Logger(HinduNewsStrategy.name);
+export class HinduStrategy implements SportsStrategy {
+  private readonly logger = new Logger(HinduStrategy.name);
   private readonly API_URL: string;
 
   constructor(private configService: ConfigService) {
