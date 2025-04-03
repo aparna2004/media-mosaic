@@ -5,3 +5,4 @@ export * from './healthCheckResponse.types';
 export * from './message.types';
 export * from './preferences.dto';
 export * from './sports.types';
+export * from './finance.types';

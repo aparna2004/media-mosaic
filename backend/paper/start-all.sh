@@ -26,7 +26,7 @@ echo -e "${BLUE}Starting Media Mosaic Development Environment...${NC}"
 check_docker
 
 # Kill existing processes on ports if they exist
-for port in 3000 3001 3002 3003 4001 4002 4003 9090 3005; do
+for port in 3000 3001 3002 3003 3004 4001 4002 4003 4004 9090 3005; do
     if check_port $port; then
         echo -e "${RED}Killing process on port $port${NC}"
         kill $(lsof -t -i:$port) 2>/dev/null
@@ -50,6 +50,9 @@ npm run start:dev news &
 
 echo -e "${GREEN}Starting Sports Service (TCP: 3003, HTTP: 4003)...${NC}"
 npm run start:dev sports &
+
+echo -e "${GREEN}Starting Finance Service (TCP: 3004, HTTP: 4004)...${NC}"
+npm run start:dev finance &
 
 echo -e "${GREEN}Starting Gateway Service (HTTP: 3000)...${NC}"
 npm run start:dev paper &
@@ -78,12 +81,14 @@ check_service "Gateway" 3000
 check_service "User Service" 4001
 check_service "News Service" 4002
 check_service "Sports Service" 4003
+check_service "Finance Service" 4004
 
 echo -e "${BLUE}All services are running:${NC}"
 echo -e "${GREEN}Gateway:${NC} http://localhost:3000"
 echo -e "${GREEN}User Service:${NC} TCP://localhost:3001 (Metrics: http://localhost:4001)"
 echo -e "${GREEN}News Service:${NC} TCP://localhost:3002 (Metrics: http://localhost:4002)"
 echo -e "${GREEN}Sports Service:${NC} TCP://localhost:3003 (Metrics: http://localhost:4003)"
+echo -e "${GREEN}Finance Service:${NC} TCP://localhost:3004 (Metrics: http://localhost:4004)"
 echo -e "${GREEN}Prometheus:${NC} http://localhost:9090"
 echo -e "${GREEN}Grafana:${NC} http://localhost:3005 (admin/admin)"
 

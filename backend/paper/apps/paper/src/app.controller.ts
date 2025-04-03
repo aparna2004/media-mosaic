@@ -21,7 +21,6 @@ import { PreferencesDto } from './dto/peferences.dto';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @ApiTags('health')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get('protected')
@@ -34,7 +33,6 @@ export class AppController {
     };
   }
 
-  @ApiTags('health')
   @Get('health')
   @ApiOperation({ summary: 'Get gateway service health status' })
   @ApiResponse({
@@ -60,7 +58,6 @@ export class AppController {
     };
   }
 
-  @ApiTags('health')
   @Get('health/services')
   @ApiOperation({ summary: 'Get all microservices health status' })
   @ApiResponse({
@@ -78,25 +75,6 @@ export class AppController {
     return this.appService.checkServicesHealth();
   }
 
-  @ApiTags('news')
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @Get('news/general')
-  @ApiOperation({ summary: 'Get general news for user' })
-  @ApiResponse({ status: 200, description: 'Returns news articles' })
-  getGeneralNews(@Request() req: any) {
-    return this.appService.getGeneralNews(req.user.email);
-  }
-
-  @ApiTags('news')
-  @Get('news')
-  @ApiOperation({ summary: 'Get news for unauthorized user' })
-  @ApiResponse({ status: 200, description: 'Returns news articles' })
-  getNews() {
-    return this.appService.getNews();
-  }
-
-  @ApiTags('news')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post('set-preferences')
@@ -109,7 +87,6 @@ export class AppController {
     return this.appService.setPreferences(req.user.email, setPreferencesDto);
   }
 
-  @ApiTags('news')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get('get-preferences')
@@ -119,7 +96,6 @@ export class AppController {
     return this.appService.getPreferences(req.user.email);
   }
 
-  @ApiTags('news')
   @Get('categories')
   @ApiOperation({ summary: 'Get available news categories' })
   @ApiResponse({
@@ -134,14 +110,5 @@ export class AppController {
   })
   getCategories() {
     return this.appService.getCategories();
-  }
-
-  @ApiTags('news')
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @Get('news/sports')
-  @ApiOperation({ summary: 'Get sports news' })
-  async getSportsNews(@Request() req: any) {
-    return await this.appService.getSportsNews(req.user.email);
   }
 }
