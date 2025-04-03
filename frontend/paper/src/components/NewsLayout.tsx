@@ -1,6 +1,5 @@
 import { NewsItem } from "@/types/news";
 import NewsCard from "./NewsCard";
-import { CategorySelector } from './CategorySelector';
 
 interface NewsLayoutProps {
   news: NewsItem[];
@@ -24,14 +23,8 @@ const NewsLayout = ({ news, category }: NewsLayoutProps) => {
     return chunks;
   }, [] as NewsItem[][]);
 
-  const handleCategoryChange = (newCategory: string) => {
-    // Handle category change
-    console.log('Selected category:', newCategory);
-  };
-
   return (
     <div className="max-w-7xl mx-auto px-4 min-h-screen space-y-8">
-      <CategorySelector onCategoryChange={handleCategoryChange} />
       {newsChunks.map((chunk, index) => {
         const mainArticle = chunk[0];
         const sideArticles = chunk.slice(1);
