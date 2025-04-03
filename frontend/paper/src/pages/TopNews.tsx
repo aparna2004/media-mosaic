@@ -1,9 +1,9 @@
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import NewsLayout from "@/components/NewsLayout";
 import { NewsItem } from "@/types/news";
 
-const API_URL = 'http://localhost:3000/news';
+const API_URL = 'http://localhost:8001/news';
 
 const fetchNews = async () => {
   const { data } = await axios.get(API_URL);

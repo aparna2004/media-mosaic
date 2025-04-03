@@ -1,6 +1,8 @@
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs1";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { navItems } from '@/config/routes';
+import { Button } from "@/components/ui/button";
+import { Settings } from "lucide-react";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -12,30 +14,16 @@ const Navbar = () => {
     return currentItem?.id || 'top-news';
   };
 
-  const handleNavigation = (value: string) => {
-    const navItem = navItems.find(item => item.id === value);
-    if (!navItem) return;
-
-    // Handle GitHub redirects
-    if (navItem.id === 'ajay' || navItem.id === 'aparna') {
-      const username = navItem.id === 'ajay' ? 'hajay180505' : 'aparna2004';
-      window.open(`https://github.com/${username}`, '_blank', 'noopener,noreferrer');
-      return;
-    }
-
-    // Regular navigation
-    navigate(navItem.path);
-  };
-
   return (
-    <nav className="w-full border border-gray-500 bg-white text-black relative flex items-center justify-center">
-      <div className="flex w-full">
-        <Tabs defaultValue={getCurrentTab()} className="m-1 w-full" onValueChange={handleNavigation}>
-          <TabsList className="flex w-full justify-between space-x-6 p-3 bg-white">
+    <nav className="w-full border border-gray-500 bg-white text-black relative flex items-center justify-between">
+      <div className="flex-1">
+        <Tabs defaultValue={getCurrentTab()} className="m-1 w-full">
+          <TabsList className="flex justify-between space-x-6 p-3 bg-white">
             {navItems.map((item) => (
               <TabsTrigger
                 key={item.id}
                 value={item.id}
+                onClick={() => navigate(item.path)}
                 className={`
                   text-black tracking-wide text-base
                   uppercase font-medium hover:text-gray-600
@@ -50,6 +38,18 @@ const Navbar = () => {
             ))}
           </TabsList>
         </Tabs>
+      </div>
+      
+      {/* Preferences Button */}
+      <div className="px-4">
+        <Button 
+          variant="ghost" 
+          size="icon"
+          onClick={() => navigate('/preferences')}
+          className="hover:bg-gray-100"
+        >
+          <Settings className="h-5 w-5" />
+        </Button>
       </div>
     </nav>
   );

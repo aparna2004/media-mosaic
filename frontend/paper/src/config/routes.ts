@@ -5,7 +5,8 @@ export const ROUTES = {
   ENTERTAINMENT: '/entertainment',
   TECHNOLOGY: '/technology',  // Changed from TECH
   AJAY: '/ajay',
-  APARNA: '/aparna'
+  APARNA: '/aparna',
+  PREFERENCES: '/preferences',
 } as const;
 
 export const navItems = [
