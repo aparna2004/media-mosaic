@@ -1,8 +1,20 @@
 import { NestFactory } from '@nestjs/core';
 import { SportsModule } from './sports.module';
+import { Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create(SportsModule);
-  await app.listen(process.env.port ?? 3000);
+  // TCP Microservice
+  app.connectMicroservice({
+    transport: Transport.TCP,
+    options: {
+      host: 'localhost',
+      port: 3003,
+    },
+  });
+
+  // HTTP for Prometheus metrics
+  await app.listen(4004);
+  await app.startAllMicroservices();
 }
 bootstrap();

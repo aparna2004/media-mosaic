@@ -26,7 +26,7 @@ export class AuthController {
     if (!user) {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
-    const { access_token } = await this.authService.login(user);
+    const { access_token } = this.authService.login(user);
 
     // Set JWT token in HTTP-only cookie
     response.cookie('jwt', access_token, {

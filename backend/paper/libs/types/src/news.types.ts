@@ -17,12 +17,3 @@ export enum NewsCategory {
   GUARDIAN = 'guardian',
   HINDU = 'hindu',
 }
-
-export enum SportsCategory {
-  CRICKET = 'cricket',
-  FOOTBALL = 'football',
-  NFL = 'nfl',
-  MLB = 'mlb',
-  NHL = 'nhl',
-  NBA = 'nba',
-}

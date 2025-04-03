@@ -26,6 +26,14 @@ import { metricsProviders } from './metrics/metrics.providers';
           port: 3002,
         },
       },
+      {
+        name: 'SPORTS_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: 'localhost',
+          port: 3003,
+        },
+      },
     ]),
     PrometheusModule.register({
       defaultMetrics: {
