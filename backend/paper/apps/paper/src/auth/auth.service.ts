@@ -4,6 +4,7 @@ import { lastValueFrom } from 'rxjs';
 import { ClientProxy } from '@nestjs/microservices';
 import { Inject } from '@nestjs/common';
 import { User } from '@prisma/client';
+import { Message } from '@app/types';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +16,7 @@ export class AuthService {
   async validateUser(email: string, password: string) {
     try {
       const user: User = await lastValueFrom(
-        this.userServiceClient.send('validate_user', { email, password }),
+        this.userServiceClient.send(Message.VALIDATE_USER, { email, password }),
       );
       if (user) {
         return user;
@@ -32,10 +33,10 @@ export class AuthService {
   async signup(signupDto: any) {
     try {
       const user: User = await lastValueFrom(
-        this.userServiceClient.send('create_user', signupDto),
+        this.userServiceClient.send(Message.CREATE_USER, signupDto),
       );
       return user;
-    } catch (error : unknown) {
+    } catch (error: unknown) {
       if (error.code === 11000) {
         // MongoDB duplicate key error
         throw new HttpException('Email already exists', HttpStatus.CONFLICT);
@@ -47,7 +48,7 @@ export class AuthService {
     }
   }
 
-  login(user: any) {
+  login(user: User) {
     const payload = { email: user.email, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),

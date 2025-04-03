@@ -13,3 +13,7 @@ scrape_configs:
     static_configs:
       - targets: ['172.17.0.1:4002']
     metrics_path: '/metrics'
+  - job_name: 'sports-service'
+    static_configs:
+      - targets: ['172.17.0.1:4003']
+    metrics_path: '/metrics'

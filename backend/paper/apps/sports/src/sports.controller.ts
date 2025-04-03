@@ -1,20 +1,15 @@
 import { Controller } from '@nestjs/common';
-import { NewsService } from './news.service';
+import { SportsService } from './sports.service';
 import { MessagePattern } from '@nestjs/microservices';
 import { HealthCheckResponse, Message } from '@app/types';
 
 @Controller()
-export class NewsController {
-  constructor(private readonly newsService: NewsService) {}
+export class SportsController {
+  constructor(private readonly newsService: SportsService) {}
 
-  @MessagePattern(Message.GET_GENERAL_NEWS)
-  async getGeneralNews(data: { preferences: string[] }): Promise<any> {
-    return this.newsService.getGeneralNews(data.preferences);
-  }
-
-  @MessagePattern(Message.GET_NEWS)
-  async getNews(): Promise<any> {
-    return this.newsService.getNews();
+  @MessagePattern(Message.GET_SPORTS_NEWS)
+  async getSportsNews(data: { preferences: string[] }): Promise<any> {
+    return this.newsService.getSportsNews(data.preferences);
   }
 
   @MessagePattern(Message.HEALTH_CHECK)

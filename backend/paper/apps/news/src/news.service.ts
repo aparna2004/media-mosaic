@@ -12,11 +12,11 @@ export class NewsService {
   private strategies: Map<NewsCategory, NewsStrategy>;
 
   constructor(
-    private currentNewsStrategy: CurrentNewsStrategy,
-    private nytNewsStrategy: NytNewsStrategy,
-    private toiNewsStrategy: ToiNewsStrategy,
-    private guardianNewsStrategy: GuardianNewsStrategy,
-    private hinduNewsStrategy: HinduNewsStrategy,
+    private readonly currentNewsStrategy: CurrentNewsStrategy,
+    private readonly nytNewsStrategy: NytNewsStrategy,
+    private readonly toiNewsStrategy: ToiNewsStrategy,
+    private readonly guardianNewsStrategy: GuardianNewsStrategy,
+    private readonly hinduNewsStrategy: HinduNewsStrategy,
   ) {
     this.strategies = new Map<NewsCategory, NewsStrategy>([
       [NewsCategory.CURRENT, currentNewsStrategy],

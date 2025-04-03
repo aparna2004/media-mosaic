@@ -1,18 +1,19 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { UserService } from './user.service';
-import { HealthCheckResponse } from '@app/types';
+import { HealthCheckResponse, Message } from '@app/types';
+import { PreferencesDto } from '@app/types';
 
 @Controller()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @MessagePattern('validate_user')
+  @MessagePattern(Message.VALIDATE_USER)
   async validateUser(data: { email: string; password: string }): Promise<any> {
     return this.userService.validateUser(data.email, data.password);
   }
 
-  @MessagePattern('create_user')
+  @MessagePattern(Message.CREATE_USER)
   async createUser(data: {
     email: string;
     password: string;
@@ -21,20 +22,20 @@ export class UserController {
     return this.userService.createUser(data);
   }
 
-  @MessagePattern('get_news_preferences')
-  async getNewsPreferences(data: { email: string }): Promise<string[]> {
-    return this.userService.getNewsPreferences(data.email);
+  @MessagePattern(Message.GET_PREFERENCES)
+  async getPreferences(data: { email: string }): Promise<PreferencesDto> {
+    return this.userService.getPreferences(data.email);
   }
 
-  @MessagePattern('set_news_preferences')
-  async setNewsPreferences(data: {
+  @MessagePattern(Message.SET_PREFERENCES)
+  async setPreferences(data: {
     email: string;
-    newsArray: string[];
+    preferences: PreferencesDto;
   }): Promise<any> {
-    return this.userService.setNewsPreferences(data.email, data.newsArray);
+    return this.userService.setPreferences(data.email, data.preferences);
   }
 
-  @MessagePattern('health_check')
+  @MessagePattern(Message.HEALTH_CHECK)
   healthCheck(): HealthCheckResponse {
     return {
       service: 'user',
@@ -44,5 +45,6 @@ export class UserController {
       uptime: process.uptime(),
     };
   }
+  
   
 }

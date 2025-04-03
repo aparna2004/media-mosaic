@@ -28,6 +28,15 @@
         "tsConfigPath": "apps/paper/tsconfig.app.json"
       }
     },
+    "sports": {
+      "type": "application",
+      "root": "apps/sports",
+      "entryFile": "main",
+      "sourceRoot": "apps/sports/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/sports/tsconfig.app.json"
+      }
+    },
     "types": {
       "type": "library",
       "root": "libs/types",

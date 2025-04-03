@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JsonObject, JsonValue } from '@prisma/client/runtime/library';
+import { PreferencesDto } from '@app/types';
 
 @Injectable()
 export class UserService {
@@ -39,29 +40,22 @@ export class UserService {
     return null;
   }
 
-  async getPreferences(email: string): Promise<JsonObject> {
+  async getPreferences(email: string): Promise<PreferencesDto> {
     const user = await this.prisma.user.findUnique({
       where: { email },
       select: { preferences: true },
     });
 
-    return user?.preferences || {};
+    return (user?.preferences as unknown as PreferencesDto) || {};
   }
 
-  async getNewsPreferences(email: string): Promise<string[]> {
-    const preferences = await this.getPreferences(email);
-    const newsPreferences = preferences?.news || [];
-    console.log('News:', newsPreferences);
-    return preferences?.news || [];
-  }
-
-  async setNewsPreferences(email: string, newsArray: string[]) {
+  async setPreferences(email: string, preferences: PreferencesDto) {
     const user = await this.prisma.user.update({
       where: { email },
       data: {
         preferences: {
-          ...await this.getPreferences(email), // Keep existing preferences
-          news: newsArray, // Set `news` to new array
+          ...(await this.getPreferences(email)), // Keep existing preferences
+          ...preferences, // Set `news` to new array
         },
       },
     });

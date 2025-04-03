@@ -15,18 +15,11 @@ import {
 import { HealthCheckResponse } from '@app/types';
 import { AppService } from './app.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { SetNewsPreferencesDto } from './dtos/news-preferences.dto';
+import { PreferencesDto } from './dto/peferences.dto';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
-
-  @ApiTags('health')
-  @Get()
-  @ApiOperation({ summary: 'Get hello message' })
-  getHello(): string {
-    return this.appService.getHello();
-  }
 
   @ApiTags('health')
   @ApiBearerAuth()
@@ -106,17 +99,24 @@ export class AppController {
   @ApiTags('news')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Post('set-news-preferences')
+  @Post('set-preferences')
   @ApiOperation({ summary: 'Set user news preferences' })
   @ApiResponse({ status: 200, description: 'Preferences updated successfully' })
-  setNewsPreferences(
+  setPreferences(
     @Request() req: any,
-    @Body() setNewsPreferencesDto: SetNewsPreferencesDto,
+    @Body() setPreferencesDto: PreferencesDto,
   ) {
-    return this.appService.setNewsPreferences(
-      req.user.email,
-      setNewsPreferencesDto.newsArray,
-    );
+    return this.appService.setPreferences(req.user.email, setPreferencesDto);
+  }
+
+  @ApiTags('news')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('get-preferences')
+  @ApiOperation({ summary: 'Get user news preferences' })
+  @ApiResponse({ status: 200, description: 'Successfully got preferences' })
+  getPreferences(@Request() req: any) {
+    return this.appService.getPreferences(req.user.email);
   }
 
   @ApiTags('news')
@@ -134,5 +134,14 @@ export class AppController {
   })
   getCategories() {
     return this.appService.getCategories();
+  }
+
+  @ApiTags('news')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('news/sports')
+  @ApiOperation({ summary: 'Get sports news' })
+  async getSportsNews(@Request() req: any) {
+    return await this.appService.getSportsNews(req.user.email);
   }
 }
