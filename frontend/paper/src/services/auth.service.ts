@@ -1,18 +1,15 @@
 import axios, { AxiosError } from 'axios';
 import { LoginCredentials, RegisterCredentials, AuthResponse } from '@/types/auth';
 
-const API_URL = 'http://localhost:8001/auth';
+const API_URL = 'http://localhost:3000/auth';
 
 export const authService = {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
       const { data } = await axios.post(`${API_URL}/login`, credentials);
-      console.log("data", data);  
-      if (data.access_token) {
-        localStorage.setItem('token', data.access_token);
+      if (data.token) {
+        localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        const result = localStorage.getItem('token');
-        console.log(result);
       }
       return data;
     } catch (error) {
