@@ -10,6 +10,15 @@
   "monorepo": true,
   "root": "apps/paper",
   "projects": {
+    "finance": {
+      "type": "application",
+      "root": "apps/finance",
+      "entryFile": "main",
+      "sourceRoot": "apps/finance/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/finance/tsconfig.app.json"
+      }
+    },
     "news": {
       "type": "application",
       "root": "apps/news",
@@ -26,6 +35,15 @@
       "sourceRoot": "apps/paper/src",
       "compilerOptions": {
         "tsConfigPath": "apps/paper/tsconfig.app.json"
+      }
+    },
+    "sports": {
+      "type": "application",
+      "root": "apps/sports",
+      "entryFile": "main",
+      "sourceRoot": "apps/sports/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/sports/tsconfig.app.json"
       }
     },
     "types": {

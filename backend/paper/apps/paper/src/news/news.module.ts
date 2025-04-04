@@ -1,16 +1,13 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { NewsService } from './news.service';
+import { NewsController } from './news.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { AuthModule } from './auth/auth.module';
-import { PrometheusModule } from '@willsoto/nestjs-prometheus';
-import { metricsProviders } from './metrics/metrics.providers';
-import { NewsModule } from './news/news.module';
+import { metricsProviders } from '../metrics/metrics.providers';
 
 @Module({
+  controllers: [NewsController],
+  providers: [NewsService, ...metricsProviders],
   imports: [
-    AuthModule,
-    NewsModule,
     ClientsModule.register([
       {
         name: 'USER_SERVICE',
@@ -45,13 +42,6 @@ import { NewsModule } from './news/news.module';
         },
       },
     ]),
-    PrometheusModule.register({
-      defaultMetrics: {
-        enabled: true,
-      },
-    }),
   ],
-  controllers: [AppController],
-  providers: [AppService, ...metricsProviders],
 })
-export class AppModule {}
+export class NewsModule {}
