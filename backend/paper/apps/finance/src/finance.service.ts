@@ -13,9 +13,9 @@ export class FinanceService {
   private readonly logger = new Logger(FinanceService.name);
   private readonly NEWS_URL: string;
 
-  constructor(private configService: ConfigService) {
-    this.API_URL = this.configService.get<string>('TICKERS_URL') || '';
-    this.NEWS_URL = this.configService.get<string>('FINANCE_URL') || '';
+  constructor(private readonly configService: ConfigService) {
+    this.API_URL = this.configService.get<string>('TICKERS_URL') ?? '';
+    this.NEWS_URL = this.configService.get<string>('FINANCE_URL') ?? '';
   }
 
   async getFinanceTickers(): Promise<FinanceTicker[]> {

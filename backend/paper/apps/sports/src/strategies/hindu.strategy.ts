@@ -10,8 +10,8 @@ export class HinduStrategy implements SportsStrategy {
   private readonly logger = new Logger(HinduStrategy.name);
   private readonly API_URL: string;
 
-  constructor(private configService: ConfigService) {
-    this.API_URL = this.configService.get<string>('INDIAN_SPORTS_URL') || '';
+  constructor(private readonly configService: ConfigService) {
+    this.API_URL = this.configService.get<string>('INDIAN_SPORTS_URL') ?? '';
   }
 
   async getSportNews(): Promise<SportsItem[]> {

@@ -1,8 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { UserService } from './user.service';
-import { HealthCheckResponse, Message } from '@app/types';
-import { PreferencesDto } from '@app/types';
+import { PreferencesDto, HealthCheckResponse, Message } from '@app/types';
 
 @Controller()
 export class UserController {
@@ -41,7 +40,7 @@ export class UserController {
       service: 'user',
       status: 'ok',
       timestamp: new Date().toISOString(),
-      version: process.env.npm_package_version || '1.0.0',
+      version: process.env.npm_package_version ?? '1.0.0',
       uptime: process.uptime(),
     };
   }

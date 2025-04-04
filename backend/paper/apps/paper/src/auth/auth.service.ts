@@ -1,16 +1,15 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Inject, Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { lastValueFrom } from 'rxjs';
 import { ClientProxy } from '@nestjs/microservices';
-import { Inject } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { Message } from '@app/types';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private jwtService: JwtService,
-    @Inject('USER_SERVICE') private userServiceClient: ClientProxy,
+    private readonly jwtService: JwtService,
+    @Inject('USER_SERVICE') private readonly userServiceClient: ClientProxy,
   ) {}
 
   async validateUser(email: string, password: string) {

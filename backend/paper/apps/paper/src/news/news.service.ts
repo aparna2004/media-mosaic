@@ -1,10 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
-import { NewsItem, Message, SportsItem, FinanceTicker } from '@app/types';
+import {
+  PreferencesDto,
+  NewsItem,
+  Message,
+  SportsItem,
+  FinanceTicker,
+} from '@app/types';
 import { InjectMetric } from '@willsoto/nestjs-prometheus';
 import { Counter, Histogram } from 'prom-client';
-import { PreferencesDto } from '@app/types';
 
 @Injectable()
 export class NewsService {

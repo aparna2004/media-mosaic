@@ -6,12 +6,7 @@ import {
   Post,
   Body,
 } from '@nestjs/common';
-import {
-  ApiOperation,
-  ApiBearerAuth,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { HealthCheckResponse } from '@app/types';
 import { AppService } from './app.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
@@ -53,7 +48,7 @@ export class AppController {
       service: 'gateway',
       status: 'ok',
       timestamp: new Date().toISOString(),
-      version: process.env.npm_package_version || '1.0.0',
+      version: process.env.npm_package_version ?? '1.0.0',
       uptime: process.uptime(),
     };
   }

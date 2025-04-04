@@ -10,8 +10,8 @@ export class HinduNewsStrategy implements NewsStrategy {
   private readonly logger = new Logger(HinduNewsStrategy.name);
   private readonly API_URL: string;
 
-  constructor(private configService: ConfigService) {
-    this.API_URL = this.configService.get<string>('HINDU_URL') || '';
+  constructor(private readonly configService: ConfigService) {
+    this.API_URL = this.configService.get<string>('HINDU_URL') ?? '';
   }
 
   async getNews(): Promise<NewsItem[]> {

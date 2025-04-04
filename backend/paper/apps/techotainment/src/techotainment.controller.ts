@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { TechotainmentService } from './techotainment.service';
 import { MessagePattern } from '@nestjs/microservices';
 import { Message } from '@app/types';

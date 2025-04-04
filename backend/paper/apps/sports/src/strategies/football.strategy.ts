@@ -10,8 +10,8 @@ export class FootballStrategy implements SportsStrategy {
   private readonly logger = new Logger(FootballStrategy.name);
   private readonly API_URL: string;
 
-  constructor(private configService: ConfigService) {
-    this.API_URL = this.configService.get<string>('NFL_URL') || '';
+  constructor(private readonly configService: ConfigService) {
+    this.API_URL = this.configService.get<string>('NFL_URL') ?? '';
   }
 
   async getSportNews(): Promise<SportsItem[]> {
@@ -24,7 +24,6 @@ export class FootballStrategy implements SportsStrategy {
     }
   }
   private parseToSportsItems(apiData: any): SportsItem[] {
-    // console.log(apiData.articles);
     return apiData.articles.reduce((acc: SportsItem[], curr) => {
       if (curr.type == 'HeadlineNews' || curr.type == 'Story') {
         return [

@@ -12,8 +12,8 @@ export class GuardianNewsStrategy implements NewsStrategy {
   private readonly API_URL: string;
   private readonly API_KEY: string;
 
-  constructor(private configService: ConfigService) {
-    this.API_URL = this.configService.get<string>('GUARDIAN_URL') || '';
+  constructor(private readonly configService: ConfigService) {
+    this.API_URL = this.configService.get<string>('GUARDIAN_URL') ?? '';
   }
 
   async getNews(): Promise<NewsItem[]> {

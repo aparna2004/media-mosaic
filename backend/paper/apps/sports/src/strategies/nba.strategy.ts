@@ -10,8 +10,8 @@ export class NBAStrategy implements SportsStrategy {
   private readonly logger = new Logger(NBAStrategy.name);
   private readonly API_URL: string;
 
-  constructor(private configService: ConfigService) {
-    this.API_URL = this.configService.get<string>('NBA_URL') || '';
+  constructor(private readonly configService: ConfigService) {
+    this.API_URL = this.configService.get<string>('NBA_URL') ?? '';
   }
 
   async getSportNews(): Promise<SportsItem[]> {

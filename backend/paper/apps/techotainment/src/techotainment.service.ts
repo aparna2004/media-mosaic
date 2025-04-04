@@ -5,18 +5,16 @@ import { tech } from './data/tech';
 import { entertainment } from './data/entertainment';
 import * as xml2js from 'xml2js';
 import axios from 'axios';
-import { currency } from './data/currency';
-import { finance } from './data/finance';
 @Injectable()
 export class TechotainmentService {
   private readonly ENTERTAINMENT_URL: string;
   private readonly logger = new Logger(TechotainmentService.name);
   private readonly TECH_URL: string;
 
-  constructor(private configService: ConfigService) {
+  constructor(private readonly configService: ConfigService) {
     this.ENTERTAINMENT_URL =
-      this.configService.get<string>('ENTERTAINMENT_URL') || '';
-    this.TECH_URL = this.configService.get<string>('TECH_URL') || '';
+      this.configService.get<string>('ENTERTAINMENT_URL') ?? '';
+    this.TECH_URL = this.configService.get<string>('TECH_URL') ?? '';
   }
 
   async getEntertainment(): Promise<NewsItem[]> {
