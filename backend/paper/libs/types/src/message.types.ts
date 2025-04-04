@@ -7,6 +7,9 @@ export enum Message {
   HEALTH_CHECK = 'health_check',
   VALIDATE_USER = 'validate_user',
   CREATE_USER = 'create_user',
-  GET_TICKERS = 'get_finance',
+  GET_TICKERS = 'get_tickers',
   GET_CURRENCY = 'get_currency',
+  GET_FINANCE = 'get_finance',
+  GET_ENTERTAINMENT = 'get_entertainment',
+  GET_TECH = 'get_tech',
 }

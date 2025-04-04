@@ -46,6 +46,15 @@
         "tsConfigPath": "apps/sports/tsconfig.app.json"
       }
     },
+    "techotainment": {
+      "type": "application",
+      "root": "apps/techotainment",
+      "entryFile": "main",
+      "sourceRoot": "apps/techotainment/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/techotainment/tsconfig.app.json"
+      }
+    },
     "types": {
       "type": "library",
       "root": "libs/types",

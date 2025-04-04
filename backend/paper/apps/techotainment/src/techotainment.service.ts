@@ -1,71 +1,31 @@
-import { FinanceTicker, NewsItem } from '@app/types';
+import { NewsItem } from '@app/types';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { tickerFallback } from './data/tickerFallback';
+import { tech } from './data/tech';
+import { entertainment } from './data/entertainment';
 import * as xml2js from 'xml2js';
 import axios from 'axios';
 import { currency } from './data/currency';
 import { finance } from './data/finance';
-
 @Injectable()
-export class FinanceService {
-  private readonly API_URL: string;
-  private readonly logger = new Logger(FinanceService.name);
-  private readonly NEWS_URL: string;
+export class TechotainmentService {
+  private readonly ENTERTAINMENT_URL: string;
+  private readonly logger = new Logger(TechotainmentService.name);
+  private readonly TECH_URL: string;
 
   constructor(private configService: ConfigService) {
-    this.API_URL = this.configService.get<string>('TICKERS_URL') || '';
-    this.NEWS_URL = this.configService.get<string>('FINANCE_URL') || '';
+    this.ENTERTAINMENT_URL =
+      this.configService.get<string>('ENTERTAINMENT_URL') || '';
+    this.TECH_URL = this.configService.get<string>('TECH_URL') || '';
   }
 
-  async getFinanceTickers(): Promise<FinanceTicker[]> {
+  async getEntertainment(): Promise<NewsItem[]> {
     try {
-      const response = await axios.get(this.API_URL);
-      if (response.status !== 200) {
-        throw new Error(`API response status: ${response.status}`);
-      }
-      return this.processTickerResponse(response.data);
-    } catch (error) {
-      this.logger.warn(
-        `API call failed: ${error.message}. Using fallback data.`,
-      );
-      return this.processTickerResponse(tickerFallback);
-    }
-  }
-
-  processTickerResponse(data: any): FinanceTicker[] {
-    let topGainers: FinanceTicker[] = data.top_gainers
-      .slice(0, 3)
-      .map((item) => {
-        return {
-          ticker: item.ticker,
-          price: item.price,
-          change_percentage: item.change_percentage,
-          type: 'gainer',
-        };
-      });
-    let topLosers: FinanceTicker[] = data.top_losers.slice(0, 3).map((item) => {
-      return {
-        ticker: item.ticker,
-        price: item.price,
-        change_percentage: item.change_percentage,
-        type: 'loser',
-      };
-    });
-    return [...topGainers, ...topLosers];
-  }
-
-  getCurrency() {
-    return currency;
-  }
-
-  async getFinance(): Promise<NewsItem[]> {
-    try {
-      const response = await axios.get(this.NEWS_URL);
+      const response = await axios.get(this.ENTERTAINMENT_URL);
       return this.parseRssToNewsItems(response.data);
     } catch (error) {
       this.logger.warn(`Failed to fetch Hindu news: ${error.message}`);
-      return this.parseRssToNewsItems(finance);
+      return this.parseRssToNewsItems(entertainment);
     }
   }
 
@@ -136,5 +96,62 @@ export class FinanceService {
     }
 
     return categories.filter(Boolean);
+  }
+
+  async getTech(): Promise<NewsItem[]> {
+    try {
+      const response = await axios.get<string>(this.TECH_URL);
+      return this.parseXmlToNewsItems(response.data);
+    } catch (error) {
+      this.logger.warn(`Failed to fetch TOI news: ${error.message}`);
+      return this.parseXmlToNewsItems(tech);
+    }
+  }
+
+  private async parseXmlToNewsItems(xmlData: string): Promise<NewsItem[]> {
+    try {
+      const parser = new xml2js.Parser({ explicitArray: false });
+      const result = await parser.parseStringPromise(xmlData);
+      const items = result.rss.channel.item;
+
+      return items.map((item: any) => ({
+        id: item.guid,
+        title: item.title,
+        description: this.cleanDescription(item.description),
+        url: item.link,
+        author: item['dc:creator'] || 'Times of India',
+        image: item.enclosure?.$.url || '',
+        language: 'en',
+        category: this.extractCategoriesToi(item.link),
+        published: new Date(item.pubDate).toISOString(),
+      }));
+    } catch (error) {
+      this.logger.error(`Failed to parse XML: ${error.message}`);
+      return [];
+    }
+  }
+
+  private cleanDescription(description: string): string {
+    if (!description) return '';
+    // Remove CDATA and clean up HTML tags
+    return description
+      .replace(/<!\[CDATA\[|\]\]>/g, '')
+      .replace(/<[^>]*>/g, '')
+      .trim();
+  }
+
+  private extractCategoriesToi(url: string): string[] {
+    const categories = ['toi'];
+
+    // Extract category from URL
+    const urlParts = url.split('/');
+    if (urlParts.length > 4) {
+      categories.push(urlParts[3]); // Add main category
+      if (urlParts[4] && urlParts[4] !== 'news') {
+        categories.push(urlParts[4]); // Add subcategory
+      }
+    }
+
+    return categories;
   }
 }

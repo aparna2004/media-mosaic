@@ -14,6 +14,8 @@ export class NewsService {
     @Inject('SPORTS_SERVICE') private readonly sportsServiceClient: ClientProxy,
     @Inject('FINANCE_SERVICE')
     private readonly financeServiceClient: ClientProxy,
+    @Inject('TECHNOTAINMENT_SERVICE')
+    private readonly technotainmentServiceClient: ClientProxy,
     @InjectMetric('news_requests_total')
     private readonly newsRequestsCounter: Counter,
     @InjectMetric('news_request_duration_seconds')
@@ -81,7 +83,28 @@ export class NewsService {
 
   async getCurrency() {
     return await lastValueFrom(
-      this.financeServiceClient.send(Message.GET_CURRENCY, {}),
+      this.financeServiceClient.send<object>(Message.GET_CURRENCY, {}),
+    );
+  }
+
+  async getFinance() {
+    return await lastValueFrom(
+      this.financeServiceClient.send<NewsItem[]>(Message.GET_FINANCE, {}),
+    );
+  }
+
+  async getTech() {
+    return await lastValueFrom(
+      this.technotainmentServiceClient.send<NewsItem[]>(Message.GET_TECH, {}),
+    );
+  }
+
+  async getEntertainment() {
+    return await lastValueFrom(
+      this.technotainmentServiceClient.send<NewsItem[]>(
+        Message.GET_ENTERTAINMENT,
+        {},
+      ),
     );
   }
 }

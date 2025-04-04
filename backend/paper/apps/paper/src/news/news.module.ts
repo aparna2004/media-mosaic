@@ -41,6 +41,14 @@ import { metricsProviders } from '../metrics/metrics.providers';
           port: 3004,
         },
       },
+      {
+        name: 'TECHNOTAINMENT_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: 'localhost',
+          port: 3006,
+        },
+      },
     ]),
   ],
 })
