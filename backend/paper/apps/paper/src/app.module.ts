@@ -44,6 +44,14 @@ import { NewsModule } from './news/news.module';
           port: 3004,
         },
       },
+      {
+        name: 'TECHNOTAINMENT_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: 'localhost',
+          port: 3006,
+        },
+      },
     ]),
     PrometheusModule.register({
       defaultMetrics: {

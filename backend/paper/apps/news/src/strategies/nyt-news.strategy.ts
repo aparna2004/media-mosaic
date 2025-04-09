@@ -12,9 +12,9 @@ export class NytNewsStrategy implements NewsStrategy {
   private readonly API_KEY: string;
   private readonly FALLBACK_DATA = nytFallback;
 
-  constructor(private configService: ConfigService) {
-    this.API_URL = this.configService.get<string>('NYT_API_URL') || '';
-    this.API_KEY = this.configService.get<string>('NYT_API_KEY') || '';
+  constructor(private readonly configService: ConfigService) {
+    this.API_URL = this.configService.get<string>('NYT_API_URL') ?? '';
+    this.API_KEY = this.configService.get<string>('NYT_API_KEY') ?? '';
   }
 
   async getNews(): Promise<NewsItem[]> {

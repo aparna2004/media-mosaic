@@ -38,11 +38,35 @@ export class NewsController {
     return await this.newsService.getFinanceTickers();
   }
 
-  // @ApiBearerAuth()
-  // @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Get('currency')
   @ApiOperation({ summary: 'Get finance tickers' })
   async getCurrency() {
     return await this.newsService.getCurrency();
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('finance')
+  @ApiOperation({ summary: 'Get finance news' })
+  async getFinance() {
+    return await this.newsService.getFinance();
+  }
+
+  @Get('tech')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Get tech news' })
+  async getTech() {
+    return await this.newsService.getTech();
+  }
+
+  @Get('entertainment')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Get entertainment news' })
+  async getEntertainment() {
+    return await this.newsService.getEntertainment();
   }
 }

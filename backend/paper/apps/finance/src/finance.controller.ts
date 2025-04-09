@@ -12,7 +12,12 @@ export class FinanceController {
     return this.financeService.getFinanceTickers();
   }
   @MessagePattern(Message.GET_CURRENCY)
-  async getCurrency(data: {}): Promise<FinanceTicker[]> {
+  getCurrency(data: {}): object {
     return this.financeService.getCurrency();
+  }
+
+  @MessagePattern(Message.GET_FINANCE)
+  getFinance(data: {}): object {
+    return this.financeService.getFinance();
   }
 }

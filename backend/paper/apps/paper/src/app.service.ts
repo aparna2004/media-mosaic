@@ -1,9 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
-import { NewsCategory, SportsCategory, Message } from '@app/types';
-import { HealthCheckResponse } from '@app/types';
-import { PreferencesDto } from '@app/types';
+import {
+  HealthCheckResponse,
+  NewsCategory,
+  SportsCategory,
+  Message,
+  PreferencesDto,
+} from '@app/types';
 
 @Injectable()
 export class AppService {

@@ -17,3 +17,11 @@ scrape_configs:
     static_configs:
       - targets: ['172.17.0.1:4003']
     metrics_path: '/metrics'
+  - job_name: 'finance-service'
+    static_configs:
+      - targets: ['172.17.0.1:4004']
+    metrics_path: '/metrics'
+  - job_name: 'techotainment-service'
+    static_configs:
+      - targets: ['172.17.0.1:4006']
+    metrics_path: '/metrics'

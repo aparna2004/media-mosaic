@@ -12,8 +12,8 @@ export class ToiNewsStrategy implements NewsStrategy {
   private readonly API_URL: string;
   private readonly FALLBACK_DATA: string;
 
-  constructor(private configService: ConfigService) {
-    this.API_URL = this.configService.get<string>('TOI_URL') || '';
+  constructor(private readonly configService: ConfigService) {
+    this.API_URL = this.configService.get<string>('TOI_URL') ?? '';
     this.FALLBACK_DATA = toiNewsFallback;
   }
 

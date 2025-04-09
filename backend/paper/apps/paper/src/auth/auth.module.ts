@@ -10,7 +10,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   imports: [
     PassportModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'secret',
+      secret: process.env.JWT_SECRET ?? 'secret',
       signOptions: { expiresIn: '60m' },
     }),
     ClientsModule.register([

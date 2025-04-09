@@ -13,22 +13,24 @@ export class CurrentNewsStrategy implements NewsStrategy {
   private readonly API_KEY: string;
   private readonly FALLBACK_DATA = currentNewsFallback;
 
-  constructor(private configService: ConfigService) {
-    this.API_URL = this.configService.get<string>('CURRENT_NEWS_API_URL') || '';
-    this.API_KEY = this.configService.get<string>('CURRENT_NEWS_API_KEY') || '';
+  constructor(private readonly configService: ConfigService) {
+    this.API_URL = this.configService.get<string>('CURRENT_NEWS_API_URL') ?? '';
+    this.API_KEY = this.configService.get<string>('CURRENT_NEWS_API_KEY') ?? '';
     console.log('API_URL:', this.API_URL);
     console.log('API_KEY:', this.API_KEY);
   }
 
   async getNews(): Promise<NewsItem[]> {
     try {
-      const response = await axios.get<{ status: string; news: any[] }>(this.API_URL, {
-        params: {
-          language: 'en',
-          apiKey: this.API_KEY,
+      const response = await axios.get<{ status: string; news: any[] }>(
+        this.API_URL,
+        {
+          params: {
+            language: 'en',
+            apiKey: this.API_KEY,
+          },
         },
-      });
-      // console.log('Response:', response);
+      );
       if (response.status !== 200) {
         throw new Error(`API response status: ${response.status}`);
       }
@@ -42,7 +44,6 @@ export class CurrentNewsStrategy implements NewsStrategy {
       );
       return this.getFallbackNews();
     }
-
   }
   private getFallbackNews(): NewsItem[] {
     try {
