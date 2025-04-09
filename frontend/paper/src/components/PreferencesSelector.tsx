@@ -8,15 +8,19 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { API_BASE_URL } from '@/config/api';
 import { useMutation } from '@tanstack/react-query';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import axios from 'axios';
 
 export function PreferencesSelector() {
+  // State for multiple preference types
   const [categories, setCategories] = useState<Categories | null>(null);
-  const [selectedPreferences, setSelectedPreferences] = useState<string[]>([]);
+  const [selectedNewsPreferences, setSelectedNewsPreferences] = useState<string[]>([]);
+  const [selectedSportsPreferences, setSelectedSportsPreferences] = useState<string[]>([]);
+  const [activeTab, setActiveTab] = useState<string>("news");
   const navigate = useNavigate();
   const { user } = useAuth();
 
   useEffect(() => {
-    // Check authentication first
     const token = localStorage.getItem('token');
     console.log('Current token:', token);
     console.log('Current user:', user);
@@ -31,7 +35,9 @@ export function PreferencesSelector() {
       try {
         const data = await categoriesService.getCategories();
         setCategories(data);
-        setSelectedPreferences(['current']);
+  
+        setSelectedNewsPreferences(['current']);
+        setSelectedSportsPreferences(['indian']);
       } catch (error) {
         console.error('Failed to load categories:', error);
       }
@@ -41,39 +47,56 @@ export function PreferencesSelector() {
   }, [navigate, user]);
 
   const mutation = useMutation({
-    mutationFn: async (preferences: string[]) => {
+    mutationFn: async () => {
       const token = localStorage.getItem('token');
       if (!token) {
         console.log('Token not found, redirecting to login...');
         navigate('/login');
         return;
       }
-      const requestBody = { newsArray: preferences };
+      
 
-      const response = await fetch(`${API_BASE_URL}/set-news-preferences`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const requestBody = {
+        news: selectedNewsPreferences,
+        sports: selectedSportsPreferences
+      };
+
+      console.log('Sending preferences:', JSON.stringify(requestBody, null, 2));
+      
+  
+      try {
+        const { data } = await axios.post(
+          `${API_BASE_URL}/set-preferences`,
+          requestBody,
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            }
+          }
+        );
+        console.log('Preferences saved successfully, response:', data);
+        return data;
+      } catch (error) {
+        console.error('Error saving preferences:', error);
+        if (axios.isAxiosError(error)) {
+          console.error('Response:', error.response?.data);
+          console.error('Status:', error.response?.status);
+        }
+        throw error;
       }
-      return response.json();
     },
     onSuccess: (data) => {
-      console.log('Preferences saved successfully:', data);
+      console.log('Mutation success, navigating home');
       navigate('/');
     },
     onError: (error) => {
-      console.error('Failed to save preferences:', error);
+      console.error('Mutation error:', error);
     }
   });
 
-  const handlePreferenceChange = (category: string, checked: boolean) => {
-    setSelectedPreferences(prev => {
+  const handleNewsPreferenceChange = (category: string, checked: boolean) => {
+    setSelectedNewsPreferences(prev => {
       if (checked) {
         return [...prev, category];
       }
@@ -81,34 +104,80 @@ export function PreferencesSelector() {
     });
   };
 
+  const handleSportsPreferenceChange = (category: string, checked: boolean) => {
+    setSelectedSportsPreferences(prev => {
+      if (checked) {
+        return [...prev, category];
+      }
+      return prev.filter(p => p !== category);
+    });
+  };
+
+  const handleSavePreferences = () => {
+    console.log('Save button clicked, current selections:', {
+      news: selectedNewsPreferences,
+      sports: selectedSportsPreferences
+    });
+    mutation.mutate();
+  };
+
   if (!categories) return null;
 
   return (
     <Card className="max-w-md mx-auto mt-8">
       <CardContent className="p-6">
-        <h2 className="text-xl font-serif font-bold mb-4">News Source Preferences</h2>
-        <div className="space-y-4">
-          {categories.news.map((category) => (
-            <div key={category} className="flex items-center space-x-3">
-              <Checkbox
-                id={category}
-                checked={selectedPreferences.includes(category)}
-                onCheckedChange={(checked) => 
-                  handlePreferenceChange(category, checked as boolean)
-                }
-              />
-              <label
-                htmlFor={category}
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                {category.toUpperCase()}
-              </label>
-            </div>
-          ))}
-        </div>
+        <h2 className="text-xl font-serif font-bold mb-4">Content Preferences</h2>
+        
+        <Tabs defaultValue="news" onValueChange={setActiveTab}>
+          <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsTrigger value="news">News Sources</TabsTrigger>
+            <TabsTrigger value="sports">Sports Categories</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="news" className="space-y-4">
+            {categories.news.map((category) => (
+              <div key={category} className="flex items-center space-x-3">
+                <Checkbox
+                  id={`news-${category}`}
+                  checked={selectedNewsPreferences.includes(category)}
+                  onCheckedChange={(checked) => 
+                    handleNewsPreferenceChange(category, checked as boolean)
+                  }
+                />
+                <label
+                  htmlFor={`news-${category}`}
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  {category.toUpperCase()}
+                </label>
+              </div>
+            ))}
+          </TabsContent>
+          
+          <TabsContent value="sports" className="space-y-4">
+            {categories.sports.map((category) => (
+              <div key={category} className="flex items-center space-x-3">
+                <Checkbox
+                  id={`sports-${category}`}
+                  checked={selectedSportsPreferences.includes(category)}
+                  onCheckedChange={(checked) => 
+                    handleSportsPreferenceChange(category, checked as boolean)
+                  }
+                />
+                <label
+                  htmlFor={`sports-${category}`}
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  {category.toUpperCase()}
+                </label>
+              </div>
+            ))}
+          </TabsContent>
+        </Tabs>
+        
         <Button 
           className="w-full mt-6" 
-          onClick={() => mutation.mutate(selectedPreferences)}
+          onClick={handleSavePreferences}
           disabled={mutation.isPending}
         >
           {mutation.isPending ? 'Saving...' : 'Save Preferences'}

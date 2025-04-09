@@ -8,8 +8,8 @@ export const authService = {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
       const { data } = await axios.post(`${AUTH_URL}/login`, credentials);
-      if (data.token) {
-        localStorage.setItem('token', data.token);
+      if (data.access_token) {
+        localStorage.setItem('token', data.access_token);
         localStorage.setItem('user', JSON.stringify(data.user));
       }
       return data;
@@ -44,5 +44,12 @@ export const authService = {
 
   getToken() {
     return localStorage.getItem('token');
-  }
+  },
+
+  isAuthenticated(): boolean {
+    // Check if there's a token in localStorage
+    const token = localStorage.getItem('token');
+    return !!token; // Convert to boolean (true if token exists, false otherwise)
+  },
+  
 };
